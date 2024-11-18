@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPX Elevation Viewer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <title>GPX Map with Elevation Chart</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
 </head>
 <body>
-    <h1>GPX Elevation Viewer</h1>
-    <input type="file" id="fileInput" accept=".gpx">
     <div id="map"></div>
-    <div id="elevationInfo">Click on the track to see elevation information.</div>
-
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <div id="trackInfo">
+        <p id="trackName"></p>
+        <p id="trackDesc"></p>
+        <canvas id="elevationChart" width="400" height="200"></canvas>
+    </div>
     <script src="script2.js"></script>
 </body>
 </html>
+
