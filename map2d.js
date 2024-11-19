@@ -172,6 +172,7 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
         polyline.on('click', function () {
             document.getElementById('trackName').textContent = `Name: ${traceNames[index]}`;
             document.getElementById('trackDesc').textContent = `Description: ${traceDescs[index]}`;
+
             createElevationChart(elevations[index], trackCoordinates);
         });
     });
@@ -180,56 +181,85 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
     const bounds = L.latLngBounds(allCoordinates);
     map.fitBounds(bounds);
 }
+let elevationChart = null; // Variable globale pour stocker l'instance du graphique
+
+// Créer la timeline avec les distances cumulées en x
 // Créer la timeline avec les distances cumulées en x
 function createElevationChart(elevations, coordinates) {
     const distances = calculateDistances(coordinates); // Distances cumulées en km
 
-    const ctx = document.getElementById('elevationChart').getContext('2d');
+    // Détruire le graphique précédent s'il existe
+    if (elevationChart) {
+        elevationChart.destroy();
+    }
 
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: distances, // Les distances cumulées servent à positionner les données
-            datasets: [{
-                label: 'Elevation',
-                data: elevations,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 2,
-                fill: true
-            }]
+    const datasElevation = elevations.map((e, index) => {
+        return { dist: distances[index], elev: e }
+    });
+
+    function getData() {
+        return datasElevation;
+    }
+
+    // Créer un nouveau graphique
+    const { AgCharts } = agCharts;
+    const options = {
+        container: document.getElementById("myChart"),
+        title: {
+            text: "Elevation Profile",
         },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Distance (km)'
-                    },
-                  
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Elevation (m)'
-                    }
+        data: getData(),
+        series: [
+            {
+                type: "area",
+                xKey: "dist",
+                yKey: "elev",
+                yName: "Elevation",
+                interpolation: {
+                    style: 'smooth'
                 }
             }
+        ],
+    };
+
+    elevationChart = AgCharts.create(options);
+
+    // Ajouter un gestionnaire d'événements pour les mouvements de la souris
+    const chartContainer = document.getElementById("myChart");
+    chartContainer.addEventListener('mousemove', (event) => {
+        const rect = chartContainer.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+    
+        // Convertir la position x en index correspondant
+        const chartWidth = rect.width; // Largeur totale du conteneur
+        const index = Math.round(x / chartWidth * (coordinates.length - 1));
+    
+        if (index >= 0 && index < coordinates.length) {
+            const [lat, lon] = coordinates[index];
+            updateDynamicMarker(lat, lon); // Met à jour la position du marqueur
+        } else {
+            console.log("Index out of bounds:", index);
         }
     });
-        // Ajouter un gestionnaire d'événements pour les mouvements de la souris
-        ctx.canvas.addEventListener('mousemove', (event) => {
-            const rect = ctx.canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const chartArea = chart.chartArea;
-            const chartWidth = chartArea.right - chartArea.left;
-            const index = Math.floor((x - chartArea.left) / chartWidth * distances.length);
     
-            if (index >= 0 && index < coordinates.length) {
-                const [lat, lon] = coordinates[index];
-                updateDynamicMarker(lat, lon);
-            }
-        });
+}
+if (distances.length !== coordinates.length) {
+    console.error("Mismatch between distances and coordinates lengths");
+}
+
+// Fonction pour mettre à jour la position du marqueur dynamique
+function updateDynamicMarker(lat, lon) {
+    if (!lat || !lon) {
+        console.warn("Invalid lat/lon for dynamic marker:", lat, lon);
+        return;
     }
+
+    if (dynamicMarker) {
+        dynamicMarker.setLatLng([lat, lon]);
+    } else {
+        dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
+    }
+}
 
 
 // Calculer les distances cumulées
@@ -247,8 +277,8 @@ function calculateDistances(coordinates) {
         totalDistance += distance;
 
         // Convertir la distance cumulée en kilomètres
-        distances.push(totalDistance/1000);
-        console.log(`Distance cumulée: ${distances} km`);
+        const roundedDistance = parseFloat((totalDistance / 1000).toFixed(1));
+        distances.push(roundedDistance);
     }
 
     return distances;
@@ -261,8 +291,6 @@ function updateDynamicMarker(lat, lon) {
         dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
     }
 }
-
-
 
 // Calculer la distance entre deux points de coordonnées en utilisant la formule de Haversine
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -280,19 +308,6 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
     const distance = R * c;
     return distance;
 }
-
-
-
-
-// Mettre à jour la position du marqueur dynamique sur la carte
-function updateDynamicMarker(lat, lon) {
-    if (dynamicMarker) {
-        dynamicMarker.setLatLng([lat, lon]);
-    } else {
-        dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
-    }
-}
-
 
 function simplifyDouglasPeucker(points, tolerance) {
     if (points.length <= 2) return points;

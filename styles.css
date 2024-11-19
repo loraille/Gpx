@@ -5,12 +5,13 @@ body{
     padding: 0;
 }
 #map {
-    height:50vh;
-    width:50%;
+    height:40vh;
+    width:50vh;
     margin:10px;
 }
 
-#elevationInfo {
+#myChart {
+    width:60vw ;
     margin-top: 20px;
-    font-size: 18px;
+    
 }

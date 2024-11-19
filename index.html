@@ -6,18 +6,17 @@
     <title>GPX Map with Elevation Chart</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
 </head>
 <body>
-    <div id="map"></div>
+    <div id="map" style="height: 500px;"></div>
     <div id="trackInfo">
         <p id="trackName"></p>
         <p id="trackDesc"></p>
-        <canvas id="elevationChart" width="400" height="200"></canvas>
+        <div id="myChart" style="height: 300px;"></div>
     </div>
-    <script src="script2.js"></script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
+    <script src="map2d.js"></script>
 </body>
 </html>
-
