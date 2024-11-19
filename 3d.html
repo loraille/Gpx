@@ -1,60 +1,110 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-		</style>
-	</head>
-	<body>
-		<!-- Include Three.js and OrbitControls from CDN -->
-		<script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+<html lang="en">
+  <head>
+    <title>JavaScript Example - Axes Intervals - Axis Interval</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <style media="only screen">
+      :root {
+        --button-background-color: transparent;
+        --button-text-color: #212529;
+        --button-color-border-primary: #d0d5dd;
+        --button-hover-background-color: rgba(0, 0, 0, 0.1);
+        --select-chevron: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23182230" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg>');
 
-		<script>
-			console.log("Three.js and OrbitControls included successfully.");
+        overflow: hidden;
+        font-family: -apple-system, "system-ui", "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+          "Noto Color Emoji";
+      }
 
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-			console.log("Renderer created and added to document.");
+      :root[data-dark-mode="false"] {
+        background: white;
+      }
 
-			const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-			camera.position.set( 0, 0, 100 );
-			camera.lookAt( 0, 0, 0 );
-			console.log("Camera created and positioned.");
+      :root[data-dark-mode="true"] {
+        --button-text-color: #f8f9fa;
+        --button-color-border-primary: rgba(255, 255, 255, 0.2);
+        --button-hover-background-color: #2a343e;
+        --select-chevron: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg>');
 
-			const scene = new THREE.Scene();
-			console.log("Scene created.");
+        background: #192232;
+        color: white;
+      }
 
-			// Create a blue LineBasicMaterial
-			const material = new THREE.LineBasicMaterial( { color: 0x00ffff } );
-			const points = [];
-			points.push( new THREE.Vector3( - 10, 0, 0 ) );
-			points.push( new THREE.Vector3( 0, 10, 0 ) );
-			points.push( new THREE.Vector3( 10, 0, 0 ) );
+      :root,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+      }
 
-			const geometry = new THREE.BufferGeometry().setFromPoints( points );
-			const line = new THREE.Line( geometry, material );
-			scene.add( line );
-			console.log("Line created and added to scene.");
+      body {
+        display: grid;
+        grid: "toolbar" auto "canvas" minmax(0, 1fr) / 1fr;
+        padding: 1rem;
+        gap: 9px;
+      }
 
-			// Initialize OrbitControls
-			const controls = new THREE.OrbitControls( camera, renderer.domElement );
-			controls.enableDamping = true; // Enable damping (inertia), if you want
-			controls.dampingFactor = 0.25;
-			controls.enableZoom = true; // Enable zooming
-			console.log("OrbitControls initialized.");
+      .toolbar {
+        --gap-vertical: 6px;
+        --gap-horizontal: 8px;
 
-			// Animation loop
-			function animate() {
-				requestAnimationFrame( animate );
-				controls.update(); // Update controls
-				renderer.render( scene, camera );
-			}
-			animate();
-			console.log("Animation loop started.");
-		</script>
-	</body>
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: calc(var(--gap-vertical) * 0.5) var(--gap-horizontal);
+      }
+
+      .toolbar hr {
+        all: initial;
+        flex: 0 0 100%;
+      }
+
+      .toolbar :is(button, select) {
+        appearance: none;
+        border: 1px solid var(--button-color-border-primary);
+        border-radius: 6px;
+        height: 36px;
+        color: var(--button-text-color);
+        background-color: var(--button-background-color);
+        cursor: pointer;
+        display: inline-block;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        padding: 0.375em 1em 0.5em;
+        white-space: nowrap;
+        transition: background-color 0.25s ease-in-out;
+      }
+
+      .toolbar :is(button, select):hover {
+        background-color: var(--button-hover-background-color);
+      }
+
+      .toolbar button {
+        text-align: center;
+      }
+
+      .toolbar select {
+        padding-right: 2.4em;
+        background: no-repeat center right 4px var(--select-chevron);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button onclick="setStep(5)">Set Step = 5</button>
+      <button onclick="setStep(45)">Set Step = 45</button>
+      <button onclick="resetInterval()">Reset Interval</button>
+    </div>
+    <div id="myChart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@10.3.3/dist/umd/ag-charts-community.js?t=1731495896993"></script>
+    <script src="main.js"></script>
+  </body>
 </html>

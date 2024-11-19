@@ -12,11 +12,17 @@
     <div id="trackInfo">
         <p id="trackName"></p>
         <p id="trackDesc"></p>
+        <div class="toolbar">
+            <button onclick="setStep(5)">Set Step = 5</button>
+            <button onclick="setStep(45)">Set Step = 45</button>
+            <button onclick="resetInterval()">Reset Interval</button>
+        </div>
         <div id="myChart" style="height: 300px;"></div>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
+    <script src="geoFunction.js"></script>
     <script src="map2d.js"></script>
 </body>
 </html>
