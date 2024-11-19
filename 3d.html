@@ -1,6 +1,6 @@
 <html lang="en">
   <head>
-    <title>JavaScript Example - Axes Intervals - Axis Interval</title>
+    <title>JavaScript Example - Line - Simple Line</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
@@ -43,68 +43,16 @@
 
       body {
         display: grid;
-        grid: "toolbar" auto "canvas" minmax(0, 1fr) / 1fr;
+        grid-auto-rows: minmax(0, 1fr);
+        grid-auto-columns: minmax(0, 1fr);
         padding: 1rem;
-        gap: 9px;
-      }
-
-      .toolbar {
-        --gap-vertical: 6px;
-        --gap-horizontal: 8px;
-
-        position: relative;
-        display: flex;
-        align-items: baseline;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: calc(var(--gap-vertical) * 0.5) var(--gap-horizontal);
-      }
-
-      .toolbar hr {
-        all: initial;
-        flex: 0 0 100%;
-      }
-
-      .toolbar :is(button, select) {
-        appearance: none;
-        border: 1px solid var(--button-color-border-primary);
-        border-radius: 6px;
-        height: 36px;
-        color: var(--button-text-color);
-        background-color: var(--button-background-color);
-        cursor: pointer;
-        display: inline-block;
-        font: inherit;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.01em;
-        padding: 0.375em 1em 0.5em;
-        white-space: nowrap;
-        transition: background-color 0.25s ease-in-out;
-      }
-
-      .toolbar :is(button, select):hover {
-        background-color: var(--button-hover-background-color);
-      }
-
-      .toolbar button {
-        text-align: center;
-      }
-
-      .toolbar select {
-        padding-right: 2.4em;
-        background: no-repeat center right 4px var(--select-chevron);
       }
     </style>
   </head>
   <body>
-    <div class="toolbar">
-      <button onclick="setStep(5)">Set Step = 5</button>
-      <button onclick="setStep(45)">Set Step = 45</button>
-      <button onclick="resetInterval()">Reset Interval</button>
-    </div>
     <div id="myChart"></div>
-    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@10.3.3/dist/umd/ag-charts-community.js?t=1731495896993"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
+    
     <script src="main.js"></script>
   </body>
 </html>
