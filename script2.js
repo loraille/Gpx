@@ -180,22 +180,22 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
     const bounds = L.latLngBounds(allCoordinates);
     map.fitBounds(bounds);
 }
-
-// Créer la timeline avec la distance en x et l'élévation en y
+// Créer la timeline avec les distances cumulées en x
 function createElevationChart(elevations, coordinates) {
-    const distances = calculateDistances(coordinates);
+    const distances = calculateDistances(coordinates); // Distances cumulées en km
+
     const ctx = document.getElementById('elevationChart').getContext('2d');
 
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: distances,
+            labels: distances, // Les distances cumulées servent à positionner les données
             datasets: [{
                 label: 'Elevation',
                 data: elevations,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 2,
-                fill: false
+                fill: true
             }]
         },
         options: {
@@ -205,16 +205,7 @@ function createElevationChart(elevations, coordinates) {
                         display: true,
                         text: 'Distance (km)'
                     },
-                    ticks: {
-                        callback: function(value, index, values) {
-                            // Convertir les mètres en kilomètres et afficher tous les 5 km
-                            const distanceInKm = value / 1000;
-                            if (distanceInKm % 5 === 0) {
-                                return distanceInKm.toFixed(1);
-                            }
-                            return '';
-                        }
-                    }
+                  
                 },
                 y: {
                     title: {
@@ -225,36 +216,26 @@ function createElevationChart(elevations, coordinates) {
             }
         }
     });
-
-    // Ajouter un gestionnaire d'événements pour les mouvements de la souris
-    ctx.canvas.addEventListener('mousemove', (event) => {
-        const rect = ctx.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const chartArea = chart.chartArea;
-        const chartWidth = chartArea.right - chartArea.left;
-        const index = Math.floor((x - chartArea.left) / chartWidth * distances.length);
-
-        if (index >= 0 && index < coordinates.length) {
-            const [lat, lon] = coordinates[index];
-            updateDynamicMarker(lat, lon);
-        }
-    });
-}
-
-
-// Fonction pour mettre à jour la position du marqueur dynamique
-function updateDynamicMarker(lat, lon) {
-    if (dynamicMarker) {
-        dynamicMarker.setLatLng([lat, lon]);
-    } else {
-        dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
+        // Ajouter un gestionnaire d'événements pour les mouvements de la souris
+        ctx.canvas.addEventListener('mousemove', (event) => {
+            const rect = ctx.canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const chartArea = chart.chartArea;
+            const chartWidth = chartArea.right - chartArea.left;
+            const index = Math.floor((x - chartArea.left) / chartWidth * distances.length);
+    
+            if (index >= 0 && index < coordinates.length) {
+                const [lat, lon] = coordinates[index];
+                updateDynamicMarker(lat, lon);
+            }
+        });
     }
-}
 
-// Calculer les distances cumulées entre les points de coordonnées
+
+// Calculer les distances cumulées
 function calculateDistances(coordinates) {
     let totalDistance = 0;
-    const distances = [0];
+    const distances = [0]; // Ajouter un point initial à 0 km
 
     for (let i = 1; i < coordinates.length; i++) {
         const lat1 = coordinates[i - 1][0];
@@ -264,11 +245,24 @@ function calculateDistances(coordinates) {
 
         const distance = haversineDistance(lat1, lon1, lat2, lon2);
         totalDistance += distance;
-        distances.push(totalDistance);
+
+        // Convertir la distance cumulée en kilomètres
+        distances.push(totalDistance/1000);
+        console.log(`Distance cumulée: ${distances} km`);
     }
 
     return distances;
 }
+// Fonction pour mettre à jour la position du marqueur dynamique
+function updateDynamicMarker(lat, lon) {
+    if (dynamicMarker) {
+        dynamicMarker.setLatLng([lat, lon]);
+    } else {
+        dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
+    }
+}
+
+
 
 // Calculer la distance entre deux points de coordonnées en utilisant la formule de Haversine
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -285,4 +279,56 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 
     const distance = R * c;
     return distance;
+}
+
+
+
+
+// Mettre à jour la position du marqueur dynamique sur la carte
+function updateDynamicMarker(lat, lon) {
+    if (dynamicMarker) {
+        dynamicMarker.setLatLng([lat, lon]);
+    } else {
+        dynamicMarker = L.marker([lat, lon], { draggable: false }).addTo(map);
+    }
+}
+
+
+function simplifyDouglasPeucker(points, tolerance) {
+    if (points.length <= 2) return points;
+
+    let dmax = 0;
+    let index = 0;
+    const start = points[0];
+    const end = points[points.length - 1];
+
+    for (let i = 1; i < points.length - 1; i++) {
+        const d = perpendicularDistance(points[i], start, end);
+        if (d > dmax) {
+            index = i;
+            dmax = d;
+        }
+    }
+
+    if (dmax > tolerance) {
+        const firstLine = points.slice(0, index + 1);
+        const lastLine = points.slice(index);
+        return simplifyDouglasPeucker(firstLine, tolerance).slice(0, -1).concat(simplifyDouglasPeucker(lastLine, tolerance));
+    } else {
+        return [start, end];
+    }
+}
+
+function perpendicularDistance(point, lineStart, lineEnd) {
+    const x0 = point[1];
+    const y0 = point[0];
+    const x1 = lineStart[1];
+    const y1 = lineStart[0];
+    const x2 = lineEnd[1];
+    const y2 = lineEnd[0];
+
+    const numerator = Math.abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1);
+    const denominator = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
+
+    return numerator / denominator;
 }
