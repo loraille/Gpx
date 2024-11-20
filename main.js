@@ -533,11 +533,7 @@ const options = {
       },
     },
   ],
-  // listeners: {
-  //   legendItemClick: (event) => {
-  //     console.log(`Légende cliquée: ID de la série = ${event.seriesId}, ID de l'élément = ${event.itemId}, Activé = ${event.enabled}`);
-  //   },
-  // },
+
 };
 
 

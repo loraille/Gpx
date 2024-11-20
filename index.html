@@ -12,12 +12,15 @@
     <div id="trackInfo">
         <p id="trackName"></p>
         <p id="trackDesc"></p>
-        <div class="toolbar">
-            <button onclick="setStep(5)">Set Step = 5</button>
-            <button onclick="setStep(45)">Set Step = 45</button>
-            <button onclick="resetInterval()">Reset Interval</button>
+        <div class="chart">
+            <div class="toolbar">
+                <button onclick="setStep(10)">Set Step = 10</button>
+                <button onclick="setStep(30)">Set Step = 30</button>
+                <button onclick="setStep(50)">Set Step = 50</button>
+                <button onclick="resetInterval()">Reset Interval</button>
+            </div>
+            <div id="myChart" style="height: 300px;"></div>
         </div>
-        <div id="myChart" style="height: 300px;"></div>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
