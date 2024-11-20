@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <div id="map" style="height: 500px;"></div>
+    <div id="map"></div>
     <div id="trackInfo">
+        <h2>Infos du tracé</h2>
         <p id="trackName"></p>
         <p id="trackDesc"></p>
+        <div id="threejs-container"></div>
+        
         <div class="chart">
             <div class="toolbar">
                 <button onclick="setStep(10)">Set Step = 10</button>
@@ -21,11 +24,14 @@
             </div>
             <div id="myChart" style="height: 300px;"></div>
         </div>
+        
     </div>
+    
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
-    <script src="geoFunction.js"></script>
-    <script src="map2d.js"></script>
+    <script src="./scripts/geoFunction.js"></script>
+    <script src="./scripts/map2d.js"></script>
+    <script src="./scripts/map3d.js"  type="module"></script>
 </body>
 </html>
