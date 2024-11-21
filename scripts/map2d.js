@@ -279,9 +279,9 @@ options = {
         {
             type: "category",
             position: "bottom",
-            title: {
-                text: "Distance (km)",
-            },
+            // title: {
+            //     text: "Distance (km)",
+            // },
             label: {
                 formatter: (params) => `${params.value} km`,
             },

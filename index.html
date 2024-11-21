@@ -8,25 +8,28 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <div id="map"></div>
-    <div id="trackInfo">
-        <h2>Infos du tracé</h2>
-        <p id="trackName"></p>
-        <p id="trackDesc"></p>
-        <div id="threejs-container"></div>
-        
-        <div class="chart">
-            <div class="toolbar">
-                <button onclick="setStep(10)">Set Step = 10</button>
-                <button onclick="setStep(30)">Set Step = 30</button>
-                <button onclick="setStep(50)">Set Step = 50</button>
-                <button onclick="resetInterval()">Reset Interval</button>
+    <header>
+       <h1>VTT</h1>
+    </header>
+    <container>
+        <div id="map"></div>
+        <div id="trackInfo">
+            <h2>Infos du tracé</h2>
+            <p id="trackName"></p>
+            <p id="trackDesc"></p>
+            <div class="chart">
+                <div class="toolbar">
+                    <button onclick="setStep(10)">Elevation = 10m</button>
+                    <button onclick="setStep(30)">Elevation = 30m</button>
+                    <button onclick="setStep(50)">Elevation = 50m</button>
+                    <button onclick="resetInterval()">Reset Interval</button>
+                </div>
+                <div id="myChart" style="height: 300px;"></div>
             </div>
-            <div id="myChart" style="height: 300px;"></div>
+            <!-- <h2>Tracé 3D</h2> -->
+            <!-- <div id="threejs-container"></div> -->
         </div>
-        
-    </div>
-    
+    </container>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>

@@ -2,38 +2,47 @@ body{
     margin: 0;
 	/* overflow: hidden; */
 	display: flex;
-    /* flex-direction: column; */
+    flex-direction: column;
 	height: 100vh;
 	background-color: grey;
 }
+header{
+    background-color: blue;
+    height: 15vh;
+    width: 100vw;
+}
+con
 #map {
-    height:100vh;
+    height:85vh;
     width:50vw;
 }
 #trackInfo{
-    margin-top: 10px;
+    width: 50vw;
+    height: 85vh;
     display: flex;
     flex-direction: column;
-    align-items:flex-start;
-
+    justify-content: flex-start;
+    align-items:center;
 }
 .chart{
-    display: flex;
-    flex-direction: column;
-    
+width: 40vw;
+    align-items: center;
 }
 #myChart {
     
-    margin-top: 20px;
+    margin-top: 5px;
     align-items: center;
 }
 
 #threejs-container {
-	position: relative;
+    position: relative;
+    margin: 0;
     margin-top: 5px;
-	width:50vw;
-	height: 80vh;
-   
+    width: 40vw;
+    height: 40vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
   }
 
   .lil-gui {
