@@ -250,7 +250,7 @@ function createElevationChart(elevations, coordinates) {
 
 // Création du graphique
 const { AgCharts } = agCharts;
-const textColor='#000000'
+const textColor='#ffffff'
 options = {
     container: document.getElementById("myChart"),
  
