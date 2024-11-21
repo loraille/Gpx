@@ -196,8 +196,8 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
 
         // Ajouter un gestionnaire d'événements click pour afficher les informations du tracé
         polyline.on('click', function () {
-            document.getElementById('trackName').textContent = `Name: ${traceNames[index]}`;
-            document.getElementById('trackDesc').textContent = `Description: ${traceDescs[index]}`;
+            document.getElementById('trackName').textContent = `${traceNames[index]}`;
+            document.getElementById('trackDesc').textContent = `${traceDescs[index]}`;
 
             createElevationChart(elevations[index], trackCoordinates);
         });
@@ -250,11 +250,10 @@ function createElevationChart(elevations, coordinates) {
 
 // Création du graphique
 const { AgCharts } = agCharts;
+const textColor='#000000'
 options = {
     container: document.getElementById("myChart"),
-    title: {
-        text: "Profil d'Élévation",
-    },
+ 
     data: getData(),
     series: [
         {
@@ -283,6 +282,7 @@ options = {
             //     text: "Distance (km)",
             // },
             label: {
+                color: textColor,
                 formatter: (params) => `${params.value} km`,
             },
         },
@@ -290,15 +290,20 @@ options = {
             type: "number",
             position: "left",
             title: {
+                color:textColor,
                 text: "Élévation (m)",
             },
             label: {
+                color: textColor,
                 formatter: (params) => `${params.value} m`,
             },
             interval: { step: step },
             min: minElevation,
         },
     ],
+    background: {
+        fill: 'transparent',
+      },
 };
 
 elevationChart = AgCharts.create(options);

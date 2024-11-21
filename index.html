@@ -14,20 +14,33 @@
     <container>
         <div id="map"></div>
         <div id="trackInfo">
-            <h2>Infos du tracé</h2>
-            <p id="trackName"></p>
-            <p id="trackDesc"></p>
+            <div class="titre">
+                <img src="./img/track.png" alt="tracks" class="miniatureTitre">
+                <h2>Tracé: <span  id="trackName"></span></h2>
+            </div>
+            <a id="trackDownload" href="#">
+                <img src="./img/download.png" alt="download" class="miniature">
+            </a>
+            <div class="infoText">
+                <div class="description">
+                    <img src="./img/desc.png" alt="tracks" class="miniatureTitre">
+                    <h2>Description:</h2>
+                </div>
+                
+                <p id="trackDesc"></p>
+            </div>
             <div class="chart">
                 <div class="toolbar">
-                    <button onclick="setStep(10)">Elevation = 10m</button>
                     <button onclick="setStep(30)">Elevation = 30m</button>
                     <button onclick="setStep(50)">Elevation = 50m</button>
                     <button onclick="resetInterval()">Reset Interval</button>
                 </div>
                 <div id="myChart"></div>
             </div>
-            <!-- <h2>Tracé 3D</h2> -->
-            <div id="threejs-container"></div>
+            <div id="map3d">
+                <div id="threejs-container"></div>
+            </div>
+           
         </div>
     </container>
 
