@@ -62,7 +62,7 @@ async function loadGPXFile(url) {
 
 async function init() {
     try {
-        coord = await loadGPXFile('data/trace5.gpx');
+        coord = await loadGPXFile('data/course-sp1.gpx');
         initialCoord = [...coord];
         initialElevation = settings.Elevation;
         updateElevationScale(settings.Elevation);
