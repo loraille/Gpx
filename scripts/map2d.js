@@ -4,73 +4,70 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-let traceGroups=null;
+let traceGroups = null;
 let polylines = [];
 let loadedFilesCount = 0;
 let totalFiles = 0;
 let dynamicMarker = null;
-let step=20
-let options={}
-let markerPoint={
-    x:0,
-    y:0,
-    z:0
-}
+let step = 20;
+let options = {};
+let markerPoint = {
+    x: 0,
+    y: 0,
+    z: 0
+};
 
 // Récupération des tarcks en fonction de l'activité
-document.getElementById('btnVtt').addEventListener('click',()=>{
-    
-    traceGroups=vttGPX
-    readTracks()
-})
-document.getElementById('btnCourse').addEventListener('click',()=>{
-    
-    traceGroups=courseGPX
-    readTracks()
-})
-document.getElementById('btnTrail').addEventListener('click',()=>{
-     
-    traceGroups=trailGPX
-    readTracks()
-})
+document.getElementById('btnVtt').addEventListener('click', () => {
+    resetMap();
+    traceGroups = vttGPX;
+    readTracks();
+});
+document.getElementById('btnCourse').addEventListener('click', () => {
+    resetMap();
+    traceGroups = courseGPX;
+    readTracks();
+});
+document.getElementById('btnTrail').addEventListener('click', () => {
+    resetMap();
+    traceGroups = trailGPX;
+    readTracks();
+});
 
 // Calculer le nombre total de fichiers à charger
-function readTracks(){
-    if (traceGroups){
+function readTracks() {
+    if (traceGroups) {
         traceGroups.forEach(group => {
             totalFiles += group.gpxFiles.length;
-            loadGPXFiles(group.gpxFiles, group.coordinates, group.elevations, group.traceColors,group.traceDesc,group.traceName, () => updateCircle(group));
+            loadGPXFiles(group.gpxFiles, group.coordinates, group.elevations, group.traceColors, group.traceDesc, group.traceName, () => updateCircle(group));
         });
     }
 }
 
+// Charger plusieurs fichiers GPX et stocker les couleurs spécifiques à chaque tracé
+function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName, updateCircleCallback) {
+    gpxFiles.forEach(filename => {
+        fetch(filename)
+            .then(response => response.text())
+            .then(gpxData => {
+                // Appel parseGPX
+                const { GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData, coordinates, elevations);
 
-    // Charger plusieurs fichiers GPX et stocker les couleurs spécifiques à chaque tracé
-    function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName, updateCircleCallback) {
-        gpxFiles.forEach(filename => {
-            fetch(filename)
-                .then(response => response.text())
-                .then(gpxData => {
-                    // Appel parseGPX
-                    const { GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData, coordinates, elevations);
+                // Stocker les informations extraites
+                traceColors.push(GPXcolor);
+                traceName.push(GPXname);
+                traceDesc.push(GPXdesc);
 
-                    // Stocker les informations extraites
-                    traceColors.push(GPXcolor);
-                    traceName.push(GPXname);
-                    traceDesc.push(GPXdesc);
+                updateCircleCallback();
 
-                    updateCircleCallback();
-
-                    loadedFilesCount++;
-                    if (loadedFilesCount === totalFiles) {
-                        updateMapView();
-                    }
-                })
-                .catch(error => console.error('Erreur lors du chargement du fichier GPX:', error));
-        });
-    }
-
-
+                loadedFilesCount++;
+                if (loadedFilesCount === totalFiles) {
+                    updateMapView();
+                }
+            })
+            .catch(error => console.error('Erreur lors du chargement du fichier GPX:', error));
+    });
+}
 
 // Parser le contenu GPX pour extraire les coordonnées, les élévations et la couleur
 function parseGPX(gpxData, coordinates, elevations) {
@@ -107,8 +104,6 @@ function parseGPX(gpxData, coordinates, elevations) {
     coordinates.push(trackCoordinates);
     elevations.push(trackElevations);
 
-    
-
     // Retourner les informations extraites
     return { GPXcolor, GPXname, GPXdesc };
 }
@@ -127,7 +122,7 @@ function updateCircle(group) {
     // Supprimer le cercle existant si il y en a un
     if (group.circle) {
         map.removeLayer(group.circle);
-        if (group.textMarker) map.removeLayer(group.textMarker); // Supprimer l'ancien marqueur de texte
+        if (group.textMarker) map.removeLayer(group.textMarker);
     }
 
     if (group.coordinates.length > 0 && group.isCircleVisible) {
@@ -139,17 +134,17 @@ function updateCircle(group) {
         // Créer et afficher le cercle rouge
         group.circle = L.circle(center, {
             radius: radius,
-            color: 'black',       // Bordure noire
-            fillColor: 'red',     // Fond rouge
-            fillOpacity: 1        // Opacité à 100% pour un cercle entièrement rouge
+            color: 'black',
+            fillColor: 'red',
+            fillOpacity: 1
         }).addTo(map);
 
         // Ajouter un texte au centre du cercle pour afficher le nombre de tracks
         const customIcon = L.divIcon({
-            className: 'custom-track-count',  // Classe CSS pour styliser le texte
-            html: `<span>${group.gpxFiles.length}</span>`,  // Contient le nombre
-            iconSize: [20, 20],   // Ajuste la taille du texte (vous pouvez l’adapter)
-            iconAnchor: [10, 10]  // Positionne le texte au centre du cercle
+            className: 'custom-track-count',
+            html: `<span>${group.gpxFiles.length}</span>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
         });
 
         // Créer un marqueur unique pour afficher le texte au centre du cercle
@@ -157,16 +152,16 @@ function updateCircle(group) {
 
         // Gérer le clic sur le texte pour zoomer et propager le clic au cercle
         group.textMarker.on('click', function () {
-            map.setView(center, 14); // Zoomer sur le centre du cercle avec un niveau de zoom de 14
-            group.circle.fire('click'); // Propager manuellement le clic au cercle
+            map.setView(center, 14);
+            group.circle.fire('click');
         });
 
         // Ajouter un événement au clic sur le cercle
         group.circle.on('click', function () {
-            clearElevationChart(); // Effacer le graphique d'élévation
+            clearElevationChart();
 
             // Zoom sur le cercle
-            map.setView(center, 14); // Zoomer sur le centre du cercle avec un niveau de zoom de 14
+            map.setView(center, 14);
 
             // Cacher le cercle et le texte, et afficher les traces
             group.isCircleVisible = false;
@@ -185,27 +180,25 @@ function updateCircle(group) {
     }
 }
 
-
-
-
 // Fonction pour effacer le graphique d'élévation
 function clearElevationChart() {
     // Si le graphique d'élévation existe, le détruire
     if (elevationChart) {
-        elevationChart.destroy();  // Détruire l'instance du graphique
-        elevationChart = null; // Réinitialiser la variable
+        elevationChart.destroy();
+        elevationChart = null;
     }
 
     // Optionnel : vous pouvez aussi vider le conteneur du graphique si nécessaire
     const chartContainer = document.getElementById("myChart");
     chartContainer.innerHTML = ''; // Effacer le contenu HTML du graphique
 }
+
 // Afficher les tracés avec les couleurs spécifiques et la timeline
 function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevations) {
     // Supprimer tous les tracés existants
     polylines.forEach(polyline => map.removeLayer(polyline));
     polylines = [];
-    
+
     coordinates.forEach((trackCoordinates, index) => {
         // Utiliser la couleur du tracé ou la couleur par défaut
         const color = traceColors[index];
@@ -225,15 +218,14 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
     const bounds = L.latLngBounds(allCoordinates);
     map.fitBounds(bounds);
 }
-let elevationChart = null; // Variable globale pour stocker l'instance du graphique
-   
 
+let elevationChart = null; // Variable globale pour stocker l'instance du graphique
 
 // Créer la timeline avec les distances cumulées en x
 function createElevationChart(elevations, coordinates) {
     const distances = calculateDistances(coordinates); // Distances cumulées en km
-    const minElevation = Math.min(...elevations); 
-    const maxElevation = Math.max(...elevations); 
+    const minElevation = Math.min(...elevations);
+    const maxElevation = Math.max(...elevations);
 
     if (elevationChart) {
         elevationChart.destroy();
@@ -246,86 +238,84 @@ function createElevationChart(elevations, coordinates) {
         return datasElevation;
     }
 
-     
-   // Définition du tooltip avec récupération des données survolées
-   const tooltip = {
-    renderer: ({ datum }) => {
-        if (datum && datum.lat && datum.lon) {
-            
-            updateDynamicMarker(datum.lat, datum.lon,datum.elev); // Met à jour le marqueur dynamique sur la carte
-          
-            return {
-                //renvoi en légende
-                title: `Distance: ${datum.dist.toFixed(1)} km`,
-                content: `Élévation: ${datum.elev.toFixed(0)} m`
-            };
-        } else {
-            console.warn("Données invalides pour le tooltip:", datum);
-            return null;
-        }
-    },
-};
+    // Définition du tooltip avec récupération des données survolées
+    const tooltip = {
+        renderer: ({ datum }) => {
+            if (datum && datum.lat && datum.lon) {
 
-// Création du graphique
-const { AgCharts } = agCharts;
-const textColor='#ffffff'
-options = {
-    container: document.getElementById("myChart"),
- 
-    data: getData(),
-    series: [
-        {
-            type: "area",
-            xKey: "dist",
-            yKey: "elev",
-            yName: "Élévation",
-            fill: '#e67e30',
-            fillOpacity:1,
-            interpolation: { type: "smooth" },
-            tooltip,
-            marker: {
-                itemStyler: (params) => {
-                    if (params.datum.elev ===  minElevation) return { fill: 'green', size: 8 };
-                    else if (params.datum.elev ===  maxElevation) return { fill: 'red', size: 8 };
-                    else return { size: 0 };
-                }
-            },
-        }
-    ],
-    axes: [
-        {
-            type: "category",
-            position: "bottom",
-            // title: {
-            //     text: "Distance (km)",
-            // },
-            label: {
-                color: textColor,
-                formatter: (params) => `${params.value} km`,
-            },
+                updateDynamicMarker(datum.lat, datum.lon, datum.elev); // Met à jour le marqueur dynamique sur la carte
+
+                return {
+                    //renvoi en légende
+                    title: `Distance: ${datum.dist.toFixed(1)} km`,
+                    content: `Élévation: ${datum.elev.toFixed(0)} m`
+                };
+            } else {
+                console.warn("Données invalides pour le tooltip:", datum);
+                return null;
+            }
         },
-        {
-            type: "number",
-            position: "left",
-            title: {
-                color:textColor,
-                text: "Élévation (m)",
+    };
+
+    // Création du graphique
+    const { AgCharts } = agCharts;
+    const textColor = '#ffffff';
+    options = {
+        container: document.getElementById("myChart"),
+
+        data: getData(),
+        series: [
+            {
+                type: "area",
+                xKey: "dist",
+                yKey: "elev",
+                yName: "Élévation",
+                fill: '#e67e30',
+                fillOpacity: 1,
+                interpolation: { type: "smooth" },
+                tooltip,
+                marker: {
+                    itemStyler: (params) => {
+                        if (params.datum.elev === minElevation) return { fill: 'green', size: 8 };
+                        else if (params.datum.elev === maxElevation) return { fill: 'red', size: 8 };
+                        else return { size: 0 };
+                    }
+                },
+            }
+        ],
+        axes: [
+            {
+                type: "category",
+                position: "bottom",
+                // title: {
+                //     text: "Distance (km)",
+                // },
+                label: {
+                    color: textColor,
+                    formatter: (params) => `${params.value} km`,
+                },
             },
-            label: {
-                color: textColor,
-                formatter: (params) => `${params.value} m`,
+            {
+                type: "number",
+                position: "left",
+                title: {
+                    color: textColor,
+                    text: "Élévation (m)",
+                },
+                label: {
+                    color: textColor,
+                    formatter: (params) => `${params.value} m`,
+                },
+                interval: { step: step },
+                min: minElevation,
             },
-            interval: { step: step },
-            min: minElevation,
+        ],
+        background: {
+            fill: 'transparent',
         },
-    ],
-    background: {
-        fill: 'transparent',
-      },
-};
+    };
 
-elevationChart = AgCharts.create(options);
-
+    elevationChart = AgCharts.create(options);
 }
 
 // Fonction pour ajuster le "step" de l'axe des élévations
@@ -334,14 +324,13 @@ function setStep(step) {
     axis.interval = { step: step };
     elevationChart.update(options);
 }
+
 // Fonction pour ajuster le "step" de l'axe des élévations
 function resetInterval() {
     const axis = options.axes?.[1];
     axis.interval = { step: 20 };
     elevationChart.update(options);
 }
-
-
 
 // Fonction pour mettre à jour le marqueur dynamique sur la carte
 function updateDynamicMarker(lat, lon, elev) {
@@ -376,6 +365,7 @@ chartContainer.addEventListener('mouseout', function () {
         dynamicMarker = null; // Réinitialiser le marqueur
     }
 });
+
 // Calculer les distances cumulées
 function calculateDistances(coordinates) {
     let totalDistance = 0;
@@ -398,4 +388,38 @@ function calculateDistances(coordinates) {
     return distances;
 }
 
+// Fonction pour réinitialiser la carte
+function resetMap() {
+    // Supprimer tous les tracés existants
+    polylines.forEach(polyline => map.removeLayer(polyline));
+    polylines = [];
 
+    // Supprimer tous les cercles et marqueurs de texte
+    if (traceGroups) {
+        traceGroups.forEach(group => {
+            if (group.circle) {
+                map.removeLayer(group.circle);
+                group.circle = null;
+            }
+            if (group.textMarker) {
+                map.removeLayer(group.textMarker);
+                group.textMarker = null;
+            }
+            group.isCircleVisible = true; // Réinitialiser la visibilité du cercle
+        });
+    }
+
+    // Réinitialiser les variables globales
+    loadedFilesCount = 0;
+    totalFiles = 0;
+    dynamicMarker = null;
+    step = 20;
+    options = {};
+    markerPoint = { x: 0, y: 0, z: 0 };
+
+    // Réinitialiser la vue de la carte à sa position initiale
+    map.setView([0, 0], 2);
+
+    // Effacer le graphique d'élévation
+    clearElevationChart();
+}
