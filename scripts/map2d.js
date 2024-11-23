@@ -17,7 +17,7 @@ let markerPoint = {
     z: 0
 };
 
-// Récupération des tarcks en fonction de l'activité
+// Récupération des traces en fonction de l'activité
 document.getElementById('btnVtt').addEventListener('click', () => {
     resetMap();
     traceGroups = vttGPX;
@@ -39,16 +39,21 @@ function readTracks() {
     if (traceGroups) {
         traceGroups.forEach(group => {
             totalFiles += group.gpxFiles.length;
-            loadGPXFiles(group.gpxFiles, group.coordinates, group.elevations, group.traceColors, group.traceDesc, group.traceName, () => updateCircle(group));
+            loadGPXFiles(group.gpxFiles, group.coordinates, group.elevations, group.traceColors, group.traceDesc, group.traceName);
         });
     }
 }
 
 // Charger plusieurs fichiers GPX et stocker les couleurs spécifiques à chaque tracé
-function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName, updateCircleCallback) {
+function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName) {
     gpxFiles.forEach(filename => {
         fetch(filename)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur lors du chargement du fichier GPX: ${filename}`);
+                }
+                return response.text();
+            })
             .then(gpxData => {
                 // Appel parseGPX
                 const { GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData, coordinates, elevations);
@@ -58,14 +63,13 @@ function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc,
                 traceName.push(GPXname);
                 traceDesc.push(GPXdesc);
 
-                updateCircleCallback();
-
                 loadedFilesCount++;
+                console.log(`Loaded file: ${filename}`); // Débogage
                 if (loadedFilesCount === totalFiles) {
-                    updateMapView();
+                    displayTracks(coordinates, traceColors, traceName, traceDesc, elevations);
                 }
             })
-            .catch(error => console.error('Erreur lors du chargement du fichier GPX:', error));
+            .catch(error => console.error(error));
     });
 }
 
@@ -108,91 +112,6 @@ function parseGPX(gpxData, coordinates, elevations) {
     return { GPXcolor, GPXname, GPXdesc };
 }
 
-// Ajuster la vue de la carte pour englober toutes les traces chargées
-function updateMapView() {
-    const allCoordinates = traceGroups.flatMap(group => group.coordinates).flat();
-    if (allCoordinates.length > 0) {
-        const bounds = L.latLngBounds(allCoordinates);
-        map.fitBounds(bounds);
-    }
-}
-
-// Mettre à jour le cercle de chaque groupe sur la carte
-function updateCircle(group) {
-    // Supprimer le cercle existant si il y en a un
-    if (group.circle) {
-        map.removeLayer(group.circle);
-        if (group.textMarker) map.removeLayer(group.textMarker);
-    }
-
-    if (group.coordinates.length > 0 && group.isCircleVisible) {
-        const allCoordinates = group.coordinates.flat();
-        const bounds = L.latLngBounds(allCoordinates);
-        const center = bounds.getCenter();
-        const radius = center.distanceTo(bounds.getNorthEast());
-
-        // Créer et afficher le cercle rouge
-        group.circle = L.circle(center, {
-            radius: radius,
-            color: 'black',
-            fillColor: 'red',
-            fillOpacity: 1
-        }).addTo(map);
-
-        // Ajouter un texte au centre du cercle pour afficher le nombre de tracks
-        const customIcon = L.divIcon({
-            className: 'custom-track-count',
-            html: `<span>${group.gpxFiles.length}</span>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10]
-        });
-
-        // Créer un marqueur unique pour afficher le texte au centre du cercle
-        group.textMarker = L.marker(center, { icon: customIcon }).addTo(map);
-
-        // Gérer le clic sur le texte pour zoomer et propager le clic au cercle
-        group.textMarker.on('click', function () {
-            map.setView(center, 14);
-            group.circle.fire('click');
-        });
-
-        // Ajouter un événement au clic sur le cercle
-        group.circle.on('click', function () {
-            clearElevationChart();
-
-            // Zoom sur le cercle
-            map.setView(center, 14);
-
-            // Cacher le cercle et le texte, et afficher les traces
-            group.isCircleVisible = false;
-            map.removeLayer(group.circle);
-            map.removeLayer(group.textMarker);
-            displayTracks(group.coordinates, group.traceColors, group.traceName, group.traceDesc, group.elevations);
-
-            // Réafficher les cercles des autres groupes qui sont visibles
-            traceGroups.forEach(otherGroup => {
-                if (otherGroup !== group && !otherGroup.isCircleVisible) {
-                    otherGroup.isCircleVisible = true;
-                    updateCircle(otherGroup);
-                }
-            });
-        });
-    }
-}
-
-// Fonction pour effacer le graphique d'élévation
-function clearElevationChart() {
-    // Si le graphique d'élévation existe, le détruire
-    if (elevationChart) {
-        elevationChart.destroy();
-        elevationChart = null;
-    }
-
-    // Optionnel : vous pouvez aussi vider le conteneur du graphique si nécessaire
-    const chartContainer = document.getElementById("myChart");
-    chartContainer.innerHTML = ''; // Effacer le contenu HTML du graphique
-}
-
 // Afficher les tracés avec les couleurs spécifiques et la timeline
 function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevations) {
     // Supprimer tous les tracés existants
@@ -211,6 +130,19 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
             document.getElementById('trackDesc').textContent = `${traceDescs[index]}`;
 
             createElevationChart(elevations[index], trackCoordinates);
+
+            // Zoomer sur le tracé sélectionné
+            const bounds = L.latLngBounds(trackCoordinates);
+            map.fitBounds(bounds);
+
+            // Réduire l'opacité des autres tracés
+            polylines.forEach(otherPolyline => {
+                if (otherPolyline !== polyline) {
+                    otherPolyline.setStyle({ opacity: 0.3 });
+                } else {
+                    otherPolyline.setStyle({ opacity: 1 });
+                }
+            });
         });
     });
 
@@ -394,21 +326,6 @@ function resetMap() {
     polylines.forEach(polyline => map.removeLayer(polyline));
     polylines = [];
 
-    // Supprimer tous les cercles et marqueurs de texte
-    if (traceGroups) {
-        traceGroups.forEach(group => {
-            if (group.circle) {
-                map.removeLayer(group.circle);
-                group.circle = null;
-            }
-            if (group.textMarker) {
-                map.removeLayer(group.textMarker);
-                group.textMarker = null;
-            }
-            group.isCircleVisible = true; // Réinitialiser la visibilité du cercle
-        });
-    }
-
     // Réinitialiser les variables globales
     loadedFilesCount = 0;
     totalFiles = 0;
@@ -422,4 +339,17 @@ function resetMap() {
 
     // Effacer le graphique d'élévation
     clearElevationChart();
+}
+
+// Fonction pour effacer le graphique d'élévation
+function clearElevationChart() {
+    // Si le graphique d'élévation existe, le détruire
+    if (elevationChart) {
+        elevationChart.destroy();
+        elevationChart = null;
+    }
+
+    // Optionnel : vous pouvez aussi vider le conteneur du graphique si nécessaire
+    const chartContainer = document.getElementById("myChart");
+    chartContainer.innerHTML = ''; // Effacer le contenu HTML du graphique
 }
