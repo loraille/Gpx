@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="EditGPX">
   <metadata>
-    <name>Descente infernale dans la Dronne</name>
-    <color>ff0000</color>
+    <name>3 coups de cul par Larret</name>
+    <desc>Boucle au départ de Champs-Romain pour une descente bien raide où on longe la Dronne. Remontée vers 
+    Larret puis direction St Saud par le Moulin du pont. On termine cette boucle en passant par Les Pierres
+    Blanches direction Champs-Romain </desc>
+    <color>006400</color>
     <width>4</width>
-    <path>data/vtt-cr2.gpx</path>
   </metadata>
   <trk>
     <trkseg>

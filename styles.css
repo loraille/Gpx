@@ -64,11 +64,10 @@ container{
     width:50vw;
 }
 /* ------------------------- */
-/* -------présentatoin------ */
+/* -------présentation------ */
 /* ------------------------- */
 .presentation {
   display: flex;
-  /* justify-content: space-evenly;  */
   align-items: center; 
   width: 50vw;
   height: auto; 
@@ -163,7 +162,7 @@ container{
 
 /* Hover effect for each image */
 .snip1504#vttImage:hover {
-    background-color:rgb(0, 128, 0) ;
+    background-color:#008000 ;
 }
 
 .snip1504#courseImage:hover {
@@ -185,20 +184,20 @@ container{
 
 /* Styliser le texte du nombre de tracks */
 .custom-track-count {
-  color: white;           /* Texte en blanc pour contraster avec le cercle rouge */
-  font-size: 14px;        /* Taille de la police */
-  font-weight: bold;      /* Texte en gras */
-  text-align: center;     /* Centre le texte horizontalement */
-  line-height: 1;         /* Ajuste la hauteur de la ligne pour le centrer verticalement */
-  background: none;       /* Pas de fond */
-  border: none;           /* Pas de bordure */
+  color: white;           
+  font-size: 14px;        
+  font-weight: bold;      
+  text-align: center;     
+  line-height: 1;         
+  background: none;     
+  border: none;           
   padding: 0;
   margin: 0;
 }
 
 
 #trackInfo{
-  display:none;
+  display:flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items:center;
@@ -206,9 +205,21 @@ container{
   background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(115,115,115,1) 55%, rgba(255,255,255,1) 100%);
   overflow-y: auto;
   scrollbar-width: thin;
+  padding: 10px;
+  margin: 0;
 }
+.retourContainer {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: flex-end;
+  width: 100%;
+}
+#trackActivity{
+  font-size: 20px;
+}
+
 .titre{
-  margin-top:10px;
+  margin-top:15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,18 +231,26 @@ container{
 .miniatureTitre{
   height: 20px;
   width: 20px;
+  margin-left: 10px;
 }
 .infoText{
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px;
     font-size: larger;
     font-weight: 400;
+    width: 100%;
+   
 }
-.description{
+.titleContainer{
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 span{
     font-size:larger;
@@ -310,7 +329,7 @@ span{
     border: 3px solid rgb(255, 255, 255);
     border-radius: 10px;
     background-color: rgb(0, 0, 0);
-    visibility: hidden;
+   
 }
 #loader {
   position: absolute;

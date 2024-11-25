@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPX Map with Elevation Chart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><h1>Sports Outdoor Périgord Vert</h1></a>
+    </header>
+    <container>
+        <!----------------->
+        <!-- cote gauche -->
+        <!----------------->
+        <div id="map"></div>
+        <!----------------->
+        <!-- cote droit -->
+        <!----------------->
+        <div id="trackInfo">
+            <!-- Retour -->
+            <div class="retourContainer">
+                <a href="#" id="backTracks">
+                    <img src="./img/retour.png" alt="retour" class="miniatureTitre">
+                </a>
+               <h2> Retour aux tracés <span  id="trackActivity"></span></h2> 
+            </div>
+            <!-- Titre -->
+            <div class="titre">
+                <h2> <span  id="trackName"></span></h2>
+            </div>
+            <!-- Down map -->
+            <a id="trackDownload" href="#">
+                <img src="./img/download.png" alt="download" class="miniature">
+            </a>
+            <!-- Description -->
+            <div class="infoText">
+                <div class="titleContainer">
+                    <img src="./img/desc.png" alt="tracks" class="miniatureTitre">
+                    <h2>Description:</h2>
+                </div>
+                <p id="trackDesc"></p>
+            </div>
+            <!-- Chart 2D -->
+            <div class="chart">
+                <div class="toolbar">
+                    <button onclick="setStep(30)">Elevation = 30m</button>
+                    <button onclick="setStep(50)">Elevation = 50m</button>
+                    <button onclick="resetInterval()">Reset Interval</button>
+                </div>
+                <div id="myChart"></div>
+            </div>
+            <!-- Map 3D -->
+            <div id="map3d">
+                <div id="threejs-container"></div>
+            </div>
+        </div>
+    </container>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
+    <script src="./scripts/geoFunction.js"></script>
+    <script src="./scripts/tracks.js"></script>
+    
+    <script src="./scripts/track.js"></script>
+    <script src="./scripts/map3d.js" type="module"></script>
+    
+    
+</body>
+</html>

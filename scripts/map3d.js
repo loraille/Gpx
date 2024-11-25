@@ -60,9 +60,9 @@ async function loadGPXFile(url) {
     return extractTrackPoints(data);
 }
 
-async function init() {
+async function init(gpx) {
     try {
-        coord = await loadGPXFile('data/course-sp1.gpx');
+        coord = await loadGPXFile(gpx);
         initialCoord = [...coord];
         initialElevation = settings.Elevation;
         updateElevationScale(settings.Elevation);
@@ -221,5 +221,5 @@ function resetView() {
     gui.updateDisplay();
 }
 
-init();
-animate();
+    init(trackIndex);
+    animate();
