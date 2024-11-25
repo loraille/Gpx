@@ -11,6 +11,7 @@ let totalFiles = 0;
 let dynamicMarker = null;
 let step = 20;
 let options = {};
+let mapTo3d=''
 let markerPoint = {
     x: 0,
     y: 0,
@@ -21,6 +22,7 @@ let markerPoint = {
 document.getElementById('btnVtt').addEventListener('click', () => {
     resetMap();
     traceGroups = vttGPX;
+    showLoader();
     readTracks();
 });
 document.getElementById('btnCourse').addEventListener('click', () => {
@@ -44,7 +46,17 @@ function readTracks() {
     }
 }
 
-// Charger plusieurs fichiers GPX et stocker les couleurs spécifiques à chaque tracé
+// Fonction pour masquer le loader et afficher la carte 3D
+function hideLoaderAndShow3D() {
+    // Vérifier si tous les fichiers sont chargés
+    if (loadedFilesCount === totalFiles) {
+        // Si les fichiers sont chargés, masquer le loader et afficher la carte 3D
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('map3d').style.visibility = 'visible';
+    }
+}
+
+// Modifier la fonction de chargement des fichiers GPX pour lancer l'animation après le chargement complet
 function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName) {
     gpxFiles.forEach(filename => {
         fetch(filename)
@@ -64,9 +76,12 @@ function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc,
                 traceDesc.push(GPXdesc);
 
                 loadedFilesCount++;
-                console.log(`Loaded file: ${filename}`); // Débogage
+                console.log(`Loaded file: ${filename}`);
+
+                // Lorsque tous les fichiers sont chargés, afficher l'animation 3D
                 if (loadedFilesCount === totalFiles) {
                     displayTracks(coordinates, traceColors, traceName, traceDesc, elevations);
+                    // Ne pas appeler hideLoaderAndShow3D ici, car nous attendons aussi le timer
                 }
             })
             .catch(error => console.error(error));
@@ -138,11 +153,15 @@ function displayTracks(coordinates, traceColors, traceNames, traceDescs, elevati
             // Réduire l'opacité des autres tracés
             polylines.forEach(otherPolyline => {
                 if (otherPolyline !== polyline) {
-                    otherPolyline.setStyle({ opacity: 0.3 });
+                    map.removeLayer(otherPolyline)
                 } else {
-                    otherPolyline.setStyle({ opacity: 1 });
+                    otherPolyline.setStyle({ color:'rgb(255, 0, 0)'});
                 }
             });
+               // Masquer la présentation et afficher les informations du tracé
+               document.getElementById('presentation').style.display = 'none';
+               document.getElementById('trackInfo').style.display = 'flex';
+               
         });
     });
 
@@ -352,4 +371,16 @@ function clearElevationChart() {
     // Optionnel : vous pouvez aussi vider le conteneur du graphique si nécessaire
     const chartContainer = document.getElementById("myChart");
     chartContainer.innerHTML = ''; // Effacer le contenu HTML du graphique
+}
+// Fonction pour afficher le loader
+function showLoader() {
+    document.getElementById('loader').style.display = 'block';  // Afficher le loader
+    document.getElementById('map3d').style.visibility = 'hidden'; // Cacher l'animation 3D
+    setTimeout(hideLoaderAndShow3D, 3000);
+}
+
+// Fonction pour masquer le loader et afficher la carte 3D
+function hideLoaderAndShow3D() {
+    document.getElementById('loader').style.display = 'none';  // Masquer le loader
+    document.getElementById('map3d').style.visibility = 'visible';  // Afficher l'animation 3D
 }

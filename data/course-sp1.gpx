@@ -3,9 +3,9 @@
  <metadata>
   <name>Sortie vélo le matin</name>
   <desc>A venir renseigner!</desc>
+  <type>cycling</type>
  </metadata>
  <trk>
-  <type>cycling</type>
   <trkseg>
    <trkpt lat="45.49644000000001" lon="0.7458">
     <ele>143.20000000000002</ele>

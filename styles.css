@@ -299,7 +299,6 @@ span{
    
 }
 #map3d{
-
     color: rgb(255, 255, 255);
     margin-top: 10px;
     display: flex;
@@ -311,8 +310,19 @@ span{
     border: 3px solid rgb(255, 255, 255);
     border-radius: 10px;
     background-color: rgb(0, 0, 0);
+    visibility: hidden;
 }
-
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 5px;
+}
 #threejs-container {
     position: relative;
     margin: 0;

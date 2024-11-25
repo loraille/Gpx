@@ -2,23 +2,11 @@
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpsies="https://www.gpsies.com/GPX/1/0" creator="AllTrails https://www.alltrails.com/ - 241005135618" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd https://www.gpsies.com/GPX/1/0 https://www.gpsies.com/gpsies.xsd">
   <metadata>
     <name>241005135618</name>
-    <link href="https://www.gpsies.com/">
-      <text>241005135618 on AllTrails</text>
-    </link>
-    <time>2024-11-23T18:19:01Z</time>
-    <extensions>
-      <gpsies:recordedTotalCalories>1743</gpsies:recordedTotalCalories>
-      <gpsies:recordedTotalAscent>777</gpsies:recordedTotalAscent>
-      <gpsies:recordedTotalDescent>770</gpsies:recordedTotalDescent>
-      <gpsies:recordedTotalDistance>52909.7</gpsies:recordedTotalDistance>
-      <gpsies:recordedTotalElapsedTime>7818.0</gpsies:recordedTotalElapsedTime>
-      <gpsies:recordedTotalMovingTime>7696.0</gpsies:recordedTotalMovingTime>
-      <gpsies:recordedTotalTimerTime>7696.0</gpsies:recordedTotalTimerTime>
-      <gpsies:recordedAvgHeartRate>172</gpsies:recordedAvgHeartRate>
-    </extensions>
+    <color>006400</color>
+    <width>4</width>
+    <type>cycling</type>
   </metadata>
   <trk>
-    <name>241005135618 on AllTrails</name>
     <trkseg>
       <trkpt lat="45.52723998" lon="0.780125940">
         <ele>284.00000</ele>
