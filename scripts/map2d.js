@@ -1,10 +1,27 @@
 
-
 // Initialiser la carte
 const map = L.map('map').setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
+// // Fonction pour réinitialiser l'affichage des éléments
+// function resetDisplay() {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const showMap = urlParams.get('showMap');
+// console.log('showMap',showMap)
+//     if (showMap === 'false') {
+//         document.getElementById('pageAccueil').style.display = 'block';
+//         document.getElementById('map').style.display = 'none';
+//     } else {
+//         document.getElementById('pageAccueil').style.display = 'none';
+//         document.getElementById('map').style.display = 'flex';
+//         map.invalidateSize(); // Redimensionner la carte
+//     }
+// }
+
+// // Appeler la fonction resetDisplay lors du chargement de la page
+// window.addEventListener('load', resetDisplay);
 
 
 // Variables globales
@@ -17,19 +34,28 @@ let trackData = [];
 
 // Gestion des boutons pour charger les traces
 document.getElementById('btnVtt').addEventListener('click', () => {
+    document.getElementById('pageAccueil').style.display = 'none';
+    document.getElementById('map').style.display = 'flex';
       resetMap();
     traceGroups = vttGPX;
     readTracks();
+    map.invalidateSize()
 });
 document.getElementById('btnCourse').addEventListener('click', () => {
+    document.getElementById('pageAccueil').style.display = 'none';
+    document.getElementById('map').style.display = 'flex';
     resetMap();
     traceGroups = courseGPX;
     readTracks();
+    map.invalidateSize()
 });
 document.getElementById('btnTrail').addEventListener('click', () => {
+    document.getElementById('pageAccueil').style.display = 'none';
+    document.getElementById('map').style.display = 'flex';
     resetMap();
     traceGroups = trailGPX;
     readTracks();
+    map.invalidateSize()
 });
 // Affiche les tracks en fonction du retour vtt course trail
 const urlParams = new URLSearchParams(window.location.search);
@@ -37,14 +63,23 @@ const activity = urlParams.get('index');
 if(activity!==null){
 
     if(activity.includes('vtt')){
+        document.getElementById('pageAccueil').style.display = 'none';
+        document.getElementById('map').style.display = 'flex';
         traceGroups = vttGPX;
         readTracks();
+        map.invalidateSize()
     }else if(activity.includes('trail')){
+        document.getElementById('pageAccueil').style.display = 'none';
+        document.getElementById('map').style.display = 'flex';
         traceGroups = trailGPX;
         readTracks();
+        map.invalidateSize()
     }else if(activity.includes('course')){
+        document.getElementById('pageAccueil').style.display = 'none';
+        document.getElementById('map').style.display = 'flex';
         traceGroups = courseGPX;
         readTracks();
+        map.invalidateSize()
     }
 }
 // Lire et charger les traces

@@ -6,24 +6,51 @@
     <title>Sports outdoor Périgord vert</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <header>
-       <h1>Sports Outdoor Périgord Vert</h1>
+        <a href="index.html"><h1>Sports Outdoor Périgord Vert</h1></a>
     </header>
     <container>
-         <div id="map"></div>
+        <div id="pageAccueil">
+                <h2>Le mot de la bande!</h2>
+                <p>
+                Nous sommes une bande de potes et nous avons plaisir à nous retrouver au cours de nos sorties dominicales.<br>    
+                Nous souhaitons faire connaître et découvrir, dans notre cher Périgord vert, de supers parcours dans les environs de Nontron,
+                à travers le vtt, le vélo route et le trail. <br>
+                N'hésitez pas à partager également vos tracés, nous nous ferons une joie de les publier sur notre site.<br>
+                Le groupe est ouvert à tous les niveaux, débutants ou confirmés, nous sommes là pour partager notre passion et
+                vous accompagner dans vos découvertes et passer un moment sympa avec au menu de bonnes rigolades!😂😂😂<br>
+                <br>
+                <span id="joinUs">Ne soyez pas timides, rejoignez-nous ! 😉</span>
+                </p>
+                <h3>Nous contacter</h3>
+                <p v>Pour nous contacter, partager vos tracés ou rejoindre le groupe whatsapp, envoyez un email ici!</p>
+                <div class="btnMail">
+                    <a class="custom-envelope" href="mailto:postmaster@sports-outdoor-perigord-vert.fr">
+                        <i class='bx bx-envelope '  ></i>
+                </a>
+                </div>
+             
+                
+                <h3>Evènements</h3>
+                <div class="imgEvenement">
+                    <img src="./img/dec-21-gar.jpg" alt="La Gar">
+                </div>
+        </div>
+        <div id="map"></div>
         <div class="presentation" id="presentation">
-                 <figure class="snip1504" id="vttImage">
-            <img src="./img/vttNB.jpg" alt="vtt" />
-            <figcaption>
-                <h3>VTT</h3>
-                <h5>Tous les parcours</h5>
-            </figcaption>
-            <a href="#" id="btnVtt"></a>
-        </figure>
+            <figure class="snip1504" id="vttImage">
+                <img src="./img/vttNB.webp" alt="vtt" />
+                <figcaption>
+                    <h3>VTT</h3>
+                    <h5>Tous les parcours</h5>
+                </figcaption>
+                <a href="#" id="btnVtt"></a>
+            </figure>
         <figure class="snip1504" id="courseImage">
-            <img src="./img/courseNB.jpg" alt="course" />
+            <img src="./img/courseNB.webp" alt="course" />
             <figcaption>
                 <h3>Course</h3>
                 <h5>Tous les parcours</h5>
@@ -31,7 +58,7 @@
             <a href="#" id="btnCourse"></a>
         </figure>
         <figure class="snip1504" id="trailImage">
-            <img src="./img/trailNB.jpg" alt="trail" />
+            <img src="./img/trailNB.webp" alt="trail" />
             <figcaption>
                 <h3>Trail</h3>
                 <h5>Tous les parcours</h5>
@@ -40,7 +67,7 @@
         </figure>
         </div>
     </container>
-
+   
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
     <script src="./scripts/geoFunction.js"></script>

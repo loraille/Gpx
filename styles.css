@@ -30,11 +30,15 @@
   body{
     font-family: 'Source Sans Pro', sans-serif;
     margin: 0;
-	/* overflow: hidden; */
-	display: flex;
+	  display: flex;
     flex-direction: column;
-	height: 100vh;
+	  height: 100vh;
 }
+a {
+  color: inherit; 
+  text-decoration: none;
+}
+
 h1{
     font-size: 25px;
     margin: 0;
@@ -52,7 +56,8 @@ p{
     font-size: medium;
 }
 header{
-    background-color: #0000ff;
+    background-color: #272735;
+    color: #ffffff;
     display: flex;
     height: 10vh;
     width: 100vw;
@@ -64,8 +69,85 @@ container{
     display: flex;
     height: 90vh;
  }
-#map {
+ /* ------------------------- */
+/* -------page accueil------- */
+/* ------------------------- */
+#pageAccueil{
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50vw;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  padding: 10px;
+  color: #f8f9fa;
+  background-color: #2a343e;
+ }
+
+#pageAccueil h2{
+  margin-top: 30px;
+  font-size: 25px;
+  
+}
+#pageAccueil h3{
+  
+  margin-top: 15px;
+  font-size: 20px;
+}
+#pageAccueil p{
+  font-size: 18px;
+}
+#joinUs{
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+}
+.btnMail{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.custom-envelope {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 50px; 
+  width: 15%;
+  border:2px solid rgb(255, 255, 255);
+  background-color: #192232;
+  border-radius: 10px;
+  padding: 5px;
+  transition: all 0.45s ease;
+}
+.custom-envelope:hover{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #192232;
+  font-size: 50px; 
+  width: 15%;
+  border:2px solid #192232;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.imgEvenement{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.imgEvenement img {
+  max-width: 50%;
+  height: auto;
+}
+
+#map {
+  display: none;
     width:50vw;
 }
 /* ------------------------- */
@@ -187,18 +269,6 @@ container{
 /* ----affichage carte------ */
 /* ------------------------- */
 
-/* Styliser le texte du nombre de tracks */
-.custom-track-count {
-  color: white;           
-  font-size: 14px;        
-  font-weight: bold;      
-  text-align: center;     
-  line-height: 1;         
-  background: none;     
-  border: none;           
-  padding: 0;
-  margin: 0;
-}
 
 
 #trackInfo{
@@ -207,6 +277,7 @@ container{
   justify-content: flex-start;
   align-items:center;
   width: 50vw;
+  /* background-color: #8194a7; */
   background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(115,115,115,1) 55%, rgba(255,255,255,1) 100%);
   overflow-y: auto;
   scrollbar-width: thin;
@@ -304,9 +375,6 @@ container{
   align-items: center;
  font-weight: 900;
  
-}
-#map3dContainer{
-  background-color: aqua;
 }
 span{
     font-size:larger;
