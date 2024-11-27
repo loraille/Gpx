@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPX Map with Elevation Chart</title>
+    <title>Sports outdoor Périgord vert</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
@@ -22,28 +22,69 @@
         <div id="trackInfo">
             <!-- Retour -->
             <div class="retourContainer">
-                <a href="#" id="backTracks">
-                    <img src="./img/retour.png" alt="retour" class="miniatureTitre">
-                </a>
-               <h2> Retour aux tracés <span  id="trackActivity"></span></h2> 
+                <div id="retour">
+                    <a href="#" id="backTracks">
+                        <img src="./img/retour.png" alt="retour" class="miniatureTitre">
+                    </a>
+                   <h3> Retour aux tracés <span  id="trackActivity"></span></h3> 
+                </div>
+                <!-- Down map -->
+            <a id="trackDownload" href="#">
+                <img src="./img/download.png" alt="download" class="miniature">
+            </a>
             </div>
             <!-- Titre -->
             <div class="titre">
                 <h2> <span  id="trackName"></span></h2>
             </div>
-            <!-- Down map -->
-            <a id="trackDownload" href="#">
-                <img src="./img/download.png" alt="download" class="miniature">
-            </a>
+           
+            <!-- infos globale -->
+             <div class="infoGlobale">
+                <div class="infosGroupe">
+                    <img src='./img/max.png' alt="max"  class="imgInfo"/>
+                    <p id="Amax"></p>
+                </div>
+                <div class="infosGroupe">
+                    <img src="./img/min.png" alt="min" class="imgInfo">
+                    <p  id="Amin"></p>
+                </div>
+                <div class="infosGroupe">
+                    <img src="./img/gain.png" alt="gain"  class="imgInfo"/>
+                    <p id="gain"></p>
+                </div>
+                <div class="infosGroupe">
+                    <img src="./img/loss.png" alt="loss"  class="imgInfo"/>
+                    <p id="loss"></p>
+                </div>
+                <div class="infosGroupe">
+                    <img src="./img/distance.png" alt="distance"  class="imgInfo"/>
+                    <p id="distance"></p>
+                </div>
+                
+              
+                
+                
+                
+             </div>
             <!-- Description -->
             <div class="infoText">
                 <div class="titleContainer">
-                    <img src="./img/desc.png" alt="tracks" class="miniatureTitre">
-                    <h2>Description:</h2>
+                    <div class="imgTitre">
+                        <img src="./img/desc.png" alt="tracks" class="miniatureTitre">
+                    <h3>Description</h3>
+                    </div>
+                    <img src="./img/up.png" alt="tracks" class="upDown">
                 </div>
                 <p id="trackDesc"></p>
             </div>
             <!-- Chart 2D -->
+            <div class="titleContainer">
+                <div class="imgTitre"> 
+                    <img src="./img/elev.png" alt="tracks" class="miniatureTitre">
+                    <h3>Elévations</h3>
+                </div>
+                <img src="./img/up.png" alt="tracks" class="upDown">
+            </div>
             <div class="chart">
                 <div class="toolbar">
                     <button onclick="setStep(30)">Elevation = 30m</button>
@@ -53,6 +94,13 @@
                 <div id="myChart"></div>
             </div>
             <!-- Map 3D -->
+            <div class="titleContainer" >
+                <div class="imgTitre"> 
+                    <img src="./img/map3d.png" alt="tracks" class="miniatureTitre">
+                    <h3>Map 3D</h3>
+                </div>
+                <img src="./img/up.png" alt="tracks" class="upDown">
+            </div>
             <div id="map3d">
                 <div id="threejs-container"></div>
             </div>

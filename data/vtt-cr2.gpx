@@ -2,11 +2,14 @@
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="EditGPX">
   <metadata>
     <name>3 coups de cul par Larret</name>
-    <desc>Boucle au départ de Champs-Romain pour une descente bien raide où on longe la Dronne. Remontée vers 
+    <desc>Parcours sportif!
+    Boucle au départ de Champs-Romain pour une descente bien raide où on longe la Dronne. Remontée vers 
     Larret puis direction St Saud par le Moulin du pont. On termine cette boucle en passant par Les Pierres
-    Blanches direction Champs-Romain </desc>
+    Blanches direction Champs-Romain.</desc>
     <color>006400</color>
-    <width>4</width>
+    <gain>503m</gain>
+    <loss>505m</loss>
+    <calculGainLoss>Calculés avec un seuil de 10 mètres et un lissage sur 5 points</calculGainLoss>
   </metadata>
   <trk>
     <trkseg>

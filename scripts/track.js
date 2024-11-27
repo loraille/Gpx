@@ -4,19 +4,51 @@ const trackIndex = urlParams.get('index');
 //valeur de l'activité
 let activityTracks = '';
 let activityColor=''
-const descriptionContainer=document.querySelector('.titleContainer')
+const descriptionContainer=document.querySelectorAll('.titleContainer')
 
     if(urlParams.get('index').includes('vtt')){
         activityTracks = '"VTT"';
-        activityColor = '#008000';
+        activityColor = '#3CB371';
     }else if(urlParams.get('index').includes('course')){
         activityTracks = '"Course"';
-        activityColor = 'rgb(0, 0, 255)';
+        activityColor = '#1E90FF';
     }else if(urlParams.get('index').includes('trail')){
         activityTracks = '"Trail"';
-        activityColor = 'rgb(255, 165, 0)';
+        activityColor = '#D2691E';
     }
-descriptionContainer.style.backgroundColor=activityColor
+    //applique les couleurs sur les descriptions
+for (e of descriptionContainer) {
+    e.style.backgroundColor=activityColor
+}
+    //mecanique caché/affiché catégories
+let shown = false;
+const sections = document.querySelectorAll('.titleContainer .upDown');
+
+for (let img of sections) {
+    img.style.cursor='pointer'
+    img.addEventListener('click', () => {
+        let nextSibling = img.closest('.titleContainer').nextElementSibling;
+        while (nextSibling && !nextSibling.classList.contains('titleContainer')) {
+            if (nextSibling.style.display === 'none') {
+                // Restaurer l'affichage en utilisant la valeur stockée
+                nextSibling.style.display = nextSibling.getAttribute('data-default-display') || '';
+                img.src='../img/up.png'
+            } else {
+                // Masquer l'élément et stocker la valeur par défaut
+                nextSibling.setAttribute('data-default-display', window.getComputedStyle(nextSibling).display);
+                nextSibling.style.display = 'none';
+                img.src='../img/down.png'
+            }
+            nextSibling = nextSibling.nextElementSibling;
+        }
+    });
+}
+//couleur de fond des images infos
+const imgInfos=document.querySelectorAll('.imgInfo')
+for (let img of imgInfos) {
+    img.style.backgroundColor=activityColor 
+}
+
 //retour
 document.getElementById('backTracks').addEventListener('click',()=>{
     window.location.href = `index.html?index=${trackIndex}`;
@@ -46,8 +78,8 @@ fetch(trackIndex)
         return response.text();
     })
     .then(gpxData => {
-        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData);
-        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc);
+        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss } = parseGPX(gpxData);
+        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss);
     })
     .catch(error => console.error(error));
 
@@ -57,15 +89,19 @@ function parseGPX(gpxData) {
     const xmlDoc = parser.parseFromString(gpxData, 'application/xml');
     const trackPoints = xmlDoc.getElementsByTagName('trkpt');
 
-    // Extraire les balises <color>, <name> et <desc>
+    // Extraire les balises metadata
     let colorTag = xmlDoc.getElementsByTagName('color')[0]?.textContent?.trim();
     let nameTag = xmlDoc.getElementsByTagName('name')[0]?.textContent?.trim();
     let descTag = xmlDoc.getElementsByTagName('desc')[0]?.textContent?.trim();
+    let gainTag = xmlDoc.getElementsByTagName('gain')[0]?.textContent?.trim();
+    let lossTag = xmlDoc.getElementsByTagName('loss')[0]?.textContent?.trim();
 
     // Définir les valeurs par défaut si les balises sont absentes ou vides
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
     const GPXname = nameTag || 'No Name';
     const GPXdesc = descTag || 'No Description';
+    const GPXgain = gainTag || 'No Gain';
+    const GPXloss = lossTag || 'No Loss';
 
     let coordinates = [];
     let elevations = [];
@@ -83,18 +119,21 @@ function parseGPX(gpxData) {
         }
     }
 
-    return { coordinates, elevations, GPXcolor, GPXname, GPXdesc };
+    return { coordinates, elevations, GPXcolor, GPXname, GPXdesc, GPXgain,GPXloss };
 }
 
 // Afficher le tracé avec la couleur spécifique et la timeline
-function displayTrack(coordinates, elevations, color, name, desc) {
+function displayTrack(coordinates, elevations, color, name, desc,gain,loss) {
  
-    const polyline = L.polyline(coordinates, { color: color, weight: 3 }).addTo(map);
+    const polyline = L.polyline(coordinates, { color: 'red', weight: 3 }).addTo(map);
     polylines.push(polyline);
 
    //récupérations des infos
-    document.getElementById('trackName').textContent = `${name}`.toUpperCase();
+    document.getElementById('trackName').textContent = `"${name}"`.toUpperCase();
     document.getElementById('trackDesc').textContent = `${desc}`;
+    document.getElementById('gain').textContent = `${gain}`;
+    document.getElementById('loss').textContent = `${loss}`;
+   
     createElevationChart(elevations, coordinates);
 
    
@@ -106,8 +145,12 @@ function displayTrack(coordinates, elevations, color, name, desc) {
 // Créer la timeline avec les distances cumulées en x
 function createElevationChart(elevations, coordinates) {
     const distances = calculateDistances(coordinates); // Distances cumulées en km
+    const totalDistance = distances[distances.length - 1]; // Distance totale en km
+    document.getElementById('distance').textContent = `${totalDistance.toFixed(1)} km`;
     const minElevation = Math.min(...elevations);
     const maxElevation = Math.max(...elevations);
+    document.getElementById('Amin').textContent = `${minElevation.toFixed(0)}m`;
+    document.getElementById('Amax').textContent = `${maxElevation.toFixed(0)}m`;
 
     if (elevationChart) {
         elevationChart.destroy();
@@ -139,7 +182,7 @@ function createElevationChart(elevations, coordinates) {
 
     // Création du graphique
     const { AgCharts } = agCharts;
-    const textColor = '#ffffff';
+    const textColor = '#000000';
     options = {
         container: document.getElementById("myChart"),
         data: getData(),
@@ -264,29 +307,6 @@ function calculateDistances(coordinates) {
     return distances;
 }
 
-// Fonction pour réinitialiser la carte
-function resetMap() {
-    // Supprimer tous les tracés existants
-    polylines.forEach(polyline => map.removeLayer(polyline));
-    polylines = [];
 
-    // Réinitialiser les variables globales
-    dynamicMarker = null;
-    step = 20;
-    options = {};
 
-    // Réinitialiser la vue de la carte à sa position initiale
-    map.setView([0, 0], 2);
 
-    // Effacer le graphique d'élévation
-    clearElevationChart();
-}
-
-// Fonction pour effacer le graphique d'élévation
-function clearElevationChart() {
-    // Si le graphique d'élévation existe, le détruire
-    if (elevationChart) {
-        elevationChart.destroy();
-        elevationChart = null;
-    }
-}

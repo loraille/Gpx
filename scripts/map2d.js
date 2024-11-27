@@ -17,7 +17,7 @@ let trackData = [];
 
 // Gestion des boutons pour charger les traces
 document.getElementById('btnVtt').addEventListener('click', () => {
-    resetMap();
+      resetMap();
     traceGroups = vttGPX;
     readTracks();
 });
@@ -34,6 +34,8 @@ document.getElementById('btnTrail').addEventListener('click', () => {
 // Affiche les tracks en fonction du retour vtt course trail
 const urlParams = new URLSearchParams(window.location.search);
 const activity = urlParams.get('index');
+if(activity!==null){
+
     if(activity.includes('vtt')){
         traceGroups = vttGPX;
         readTracks();
@@ -44,6 +46,7 @@ const activity = urlParams.get('index');
         traceGroups = courseGPX;
         readTracks();
     }
+}
 // Lire et charger les traces
 function readTracks() {
     if (traceGroups) {
