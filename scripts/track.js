@@ -6,13 +6,13 @@ let activityTracks = '';
 let activityColor=''
 const descriptionContainer=document.querySelectorAll('.titleContainer')
 
-    if(urlParams.get('index').includes('vtt')){
+    if(urlParams.get('activity').includes('vtt')){
         activityTracks = '"VTT"';
         activityColor = '#3CB371';
-    }else if(urlParams.get('index').includes('course')){
+    }else if(urlParams.get('activity').includes('course')){
         activityTracks = '"Course"';
         activityColor = '#1E90FF';
-    }else if(urlParams.get('index').includes('trail')){
+    }else if(urlParams.get('activity').includes('trail')){
         activityTracks = '"Trail"';
         activityColor = '#D2691E';
     }
@@ -68,6 +68,7 @@ let dynamicMarker = null;
 let step = 20;
 let options = {};
 let elevationChart = null;
+let trackname=''
 
 // Lire le fichier GPX
 fetch(trackIndex)
@@ -95,10 +96,10 @@ function parseGPX(gpxData) {
     let descTag = xmlDoc.getElementsByTagName('desc')[0]?.textContent?.trim();
     let gainTag = xmlDoc.getElementsByTagName('gain')[0]?.textContent?.trim();
     let lossTag = xmlDoc.getElementsByTagName('loss')[0]?.textContent?.trim();
-
+    trackname=getBeforeDash(nameTag)
     // Définir les valeurs par défaut si les balises sont absentes ou vides
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
-    const GPXname = nameTag || 'No Name';
+    const GPXname = getAfterDash(nameTag) || 'No Name';
     const GPXdesc = descTag || 'No Description';
     const GPXgain = gainTag || 'No Gain';
     const GPXloss = lossTag || 'No Loss';
@@ -307,6 +308,17 @@ function calculateDistances(coordinates) {
     return distances;
 }
 
+// nom avant -
+function getBeforeDash(str) {
+    const parts = str.split('-');
+    return parts[0].trim();
+}
+
+// nom après -
+function getAfterDash(str) {
+    const parts = str.split('-');
+    return parts[1] ? parts[1].trim() : '';
+}
 
 
 

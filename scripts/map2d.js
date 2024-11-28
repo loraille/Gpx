@@ -1,9 +1,4 @@
 
-// Initialiser la carte
-const map = L.map('map').setView([0, 0], 2);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
 
 function getNextSundayFormatted() {
     // Créer un objet Date avec la date actuelle
@@ -41,8 +36,12 @@ const message1=`🚴Rendez-vous dimanche ${date} à 9h devant ${sp} pour la sort
 document.querySelector('.marquee-content span').textContent=message2
 
 const datenow=new Date()
-console.log(formatDateWithIntl(datenow))
 
+// Initialiser la carte
+const map = L.map('map').setView([0, 0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 // Variables globales
 let traceGroups = null;
@@ -51,6 +50,7 @@ let loadedFilesCount = 0;
 let totalFiles = 0;
 let hoveredPolyline = null;
 let trackData = [];
+let activityShow=''
 
 // Gestion des boutons pour charger les traces
 document.getElementById('btnVtt').addEventListener('click', () => {
@@ -60,6 +60,7 @@ document.getElementById('btnVtt').addEventListener('click', () => {
     traceGroups = vttGPX;
     readTracks();
     map.invalidateSize()
+    activityShow='vtt'
 });
 document.getElementById('btnCourse').addEventListener('click', () => {
     document.getElementById('pageAccueil').style.display = 'none';
@@ -68,6 +69,7 @@ document.getElementById('btnCourse').addEventListener('click', () => {
     traceGroups = courseGPX;
     readTracks();
     map.invalidateSize()
+    activityShow='course'
 });
 document.getElementById('btnTrail').addEventListener('click', () => {
     document.getElementById('pageAccueil').style.display = 'none';
@@ -76,6 +78,7 @@ document.getElementById('btnTrail').addEventListener('click', () => {
     traceGroups = trailGPX;
     readTracks();
     map.invalidateSize()
+    activityShow='trail'
 });
 // Affiche les tracks en fonction du retour vtt course trail
 const urlParams = new URLSearchParams(window.location.search);
@@ -107,13 +110,13 @@ function readTracks() {
     if (traceGroups) {
         traceGroups.forEach(group => {
             totalFiles += group.gpxFiles.length;
-            loadGPXFiles(group.gpxFiles, group.coordinates, group.elevations, group.traceColors, group.traceDesc, group.traceName);
+            loadGPXFiles(group.gpxFiles);
         });
     }
 }
 
 // Charger les fichiers GPX
-function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc, traceName) {
+function loadGPXFiles(gpxFiles) {
     gpxFiles.forEach((filename, index) => {
         fetch(filename)
             .then(response => {
@@ -136,7 +139,7 @@ function loadGPXFiles(gpxFiles, coordinates, elevations, traceColors, traceDesc,
                 });
 
                 loadedFilesCount++;
-                console.log(`Chargement réussi : ${filename}`);
+                //console.log(`Chargement réussi : ${filename}`);
 
                 if (loadedFilesCount === totalFiles) {
                     displayTracks(trackData);
@@ -197,7 +200,7 @@ function displayTracks(trackData) {
                 if (p !== polyline) p.setStyle({ opacity: 0.3 });
             });
             polyline.setStyle({ weight: 5 });
-            console.log('Trace survolée :', hoveredPolyline.gpxFile);
+            //console.log('Trace survolée :', hoveredPolyline.gpxFile);
         });
 
         polyline.on('mouseout', () => {
@@ -209,8 +212,8 @@ function displayTracks(trackData) {
         polyline.on('click', () => {
             if (hoveredPolyline) {
                 const selectedGPXFile = hoveredPolyline.gpxFile;
-                console.log('Fichier GPX sélectionné :', selectedGPXFile);
-                window.location.href = `trackInfos.html?index=${selectedGPXFile}`;
+                //console.log('Fichier GPX sélectionné :', selectedGPXFile);
+                window.location.href = `trackInfos.html?index=${selectedGPXFile}&activity=${activityShow}`;
             }
         });
 
