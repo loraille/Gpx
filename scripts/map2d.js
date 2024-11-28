@@ -1,4 +1,12 @@
+const urlParams = new URLSearchParams(window.location.search);
+const activity = urlParams.get('index');
+if (activity===''){
+    let activityShow=''
+}else{
+    activityShow=activity
+}
 
+console.log('activity',activity)
 
 function getNextSundayFormatted() {
     // Créer un objet Date avec la date actuelle
@@ -50,7 +58,7 @@ let loadedFilesCount = 0;
 let totalFiles = 0;
 let hoveredPolyline = null;
 let trackData = [];
-let activityShow=''
+
 
 // Gestion des boutons pour charger les traces
 document.getElementById('btnVtt').addEventListener('click', () => {
@@ -81,8 +89,7 @@ document.getElementById('btnTrail').addEventListener('click', () => {
     activityShow='trail'
 });
 // Affiche les tracks en fonction du retour vtt course trail
-const urlParams = new URLSearchParams(window.location.search);
-const activity = urlParams.get('index');
+
 if(activity!==null){
 
     if(activity.includes('vtt')){
@@ -213,6 +220,7 @@ function displayTracks(trackData) {
             if (hoveredPolyline) {
                 const selectedGPXFile = hoveredPolyline.gpxFile;
                 //console.log('Fichier GPX sélectionné :', selectedGPXFile);
+                //envoi fichier + activité
                 window.location.href = `trackInfos.html?index=${selectedGPXFile}&activity=${activityShow}`;
             }
         });

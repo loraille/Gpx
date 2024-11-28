@@ -1,6 +1,8 @@
 // Récupérer le paramètre de requête 'index' pour afficher le tracé
 const urlParams = new URLSearchParams(window.location.search);
 const trackIndex = urlParams.get('index');
+const selectedActivity=urlParams.get('activity')
+console.log('tre',selectedActivity)
 //valeur de l'activité
 let activityTracks = '';
 let activityColor=''
@@ -51,7 +53,7 @@ for (let img of imgInfos) {
 
 //retour
 document.getElementById('backTracks').addEventListener('click',()=>{
-    window.location.href = `index.html?index=${trackIndex}`;
+    window.location.href = `index.html?index=${selectedActivity}`;
 })
 document.getElementById('trackActivity').textContent=activityTracks
 //download map
@@ -68,7 +70,7 @@ let dynamicMarker = null;
 let step = 20;
 let options = {};
 let elevationChart = null;
-let trackname=''
+
 
 // Lire le fichier GPX
 fetch(trackIndex)
@@ -96,10 +98,10 @@ function parseGPX(gpxData) {
     let descTag = xmlDoc.getElementsByTagName('desc')[0]?.textContent?.trim();
     let gainTag = xmlDoc.getElementsByTagName('gain')[0]?.textContent?.trim();
     let lossTag = xmlDoc.getElementsByTagName('loss')[0]?.textContent?.trim();
-    trackname=getBeforeDash(nameTag)
+   
     // Définir les valeurs par défaut si les balises sont absentes ou vides
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
-    const GPXname = getAfterDash(nameTag) || 'No Name';
+    const GPXname = nameTag || 'No Name';
     const GPXdesc = descTag || 'No Description';
     const GPXgain = gainTag || 'No Gain';
     const GPXloss = lossTag || 'No Loss';
@@ -308,16 +310,7 @@ function calculateDistances(coordinates) {
     return distances;
 }
 
-// nom avant -
-function getBeforeDash(str) {
-    const parts = str.split('-');
-    return parts[0].trim();
-}
-// nom après -
-function getAfterDash(str) {
-    const parts = str.split('-');
-    return parts[1] ? parts[1].trim() : '';
-}
+
 
 
 

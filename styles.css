@@ -54,7 +54,10 @@ h3{
 }
 p{
     margin: 0;
-    font-size: medium;
+    font-size:small;
+}
+ol{
+  font-size: larger;
 }
 header{
     background-color: #272735;
@@ -104,7 +107,6 @@ container{
 }
 .section{
   border-top: 1px solid white;
-  border-bottom: 1px solid white;
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -173,20 +175,33 @@ container{
   border:2px solid #192232;
   background-color: #ffffff;
 }
+.videoContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+video{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30vw;
 
+}
 .imgEvenement{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 47vw;
   margin-top: 10px;
+ 
 }
-.imgEvenement a{
+/* .imgEvenement a{
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-}
+} */
 .imgEvenement img{
   width: 70%;
   box-shadow: 3px 5px 5px rgb(0, 0, 0);

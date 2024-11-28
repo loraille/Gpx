@@ -1,7 +1,7 @@
 // Groupes de traces avec plusieurs fichiers GPX par groupe
 const vttGPX = [
     {
-        gpxFiles: ['data/vtt-cr1.gpx','data/vtt-cr2.gpx'],
+        gpxFiles: ['https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732806495/vtt-cr1_f5num4.gpx','https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732789966/vtt-cr2_asrztd.gpx'],
     },
 ];
 const courseGPX = [
