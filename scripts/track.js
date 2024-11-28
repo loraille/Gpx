@@ -313,7 +313,6 @@ function getBeforeDash(str) {
     const parts = str.split('-');
     return parts[0].trim();
 }
-
 // nom après -
 function getAfterDash(str) {
     const parts = str.split('-');
