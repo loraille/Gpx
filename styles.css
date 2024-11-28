@@ -42,6 +42,7 @@ a {
 h1{
     font-size: 25px;
     margin: 0;
+    margin-left: 30px;
 }
 h2{
     font-size: 30px;
@@ -64,6 +65,7 @@ header{
     align-items: center;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: italic;
+  
 }
 container{
     display: flex;
@@ -77,7 +79,7 @@ container{
   flex-direction: column;
   align-items: flex-start;
   width: 50vw;
-  height: 100vh;
+  /* height: 100vh; */
   overflow-y: scroll;
   scrollbar-width: thin;
   padding: 10px;
@@ -86,17 +88,60 @@ container{
  }
 
 #pageAccueil h2{
-  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  margin: 10px 0;
   font-size: 25px;
-  
+  width: 100%;
 }
 #pageAccueil h3{
-  
-  margin-top: 15px;
-  font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 23px;
 }
 #pageAccueil p{
   font-size: 18px;
+}
+.section{
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.marquee {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Largeur de la zone visible */
+  overflow: hidden; /* Masque tout ce qui dépasse */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color:  #272735;
+  padding: 20px 0;
+  margin: 10px 0;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite; /* Défilement continu */
+}
+
+.marquee-content span {
+  display: inline-block;
+  padding-right: 50px; /* Espace entre les répétitions */
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Animation */
+@keyframes scroll {
+  from {
+      transform: translateX(120%); /* Commence à l'extérieur de l'écran à droite */
+  }
+  to {
+      transform: translateX(-100%); /* Sort de l'écran à gauche */
+  }
 }
 #joinUs{
   display: flex;
@@ -108,14 +153,15 @@ container{
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 10px;
 }
 .custom-envelope {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #ffffff;
-  font-size: 50px; 
-  width: 15%;
+  font-size: 40px; 
+  width: 10%;
   border:2px solid rgb(255, 255, 255);
   background-color: #192232;
   border-radius: 10px;
@@ -123,16 +169,9 @@ container{
   transition: all 0.45s ease;
 }
 .custom-envelope:hover{
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #192232;
-  font-size: 50px; 
-  width: 15%;
   border:2px solid #192232;
   background-color: #ffffff;
-  border-radius: 10px;
-  padding: 5px;
 }
 
 .imgEvenement{
@@ -140,10 +179,27 @@ container{
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 10px;
 }
-.imgEvenement img {
-  max-width: 50%;
-  height: auto;
+.imgEvenement a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.imgEvenement img{
+  width: 70%;
+  box-shadow: 3px 5px 5px rgb(0, 0, 0);
+  border-radius: 10px;
+}
+
+.footer-txt{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #map {

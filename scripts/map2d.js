@@ -5,23 +5,43 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// // Fonction pour réinitialiser l'affichage des éléments
-// function resetDisplay() {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const showMap = urlParams.get('showMap');
-// console.log('showMap',showMap)
-//     if (showMap === 'false') {
-//         document.getElementById('pageAccueil').style.display = 'block';
-//         document.getElementById('map').style.display = 'none';
-//     } else {
-//         document.getElementById('pageAccueil').style.display = 'none';
-//         document.getElementById('map').style.display = 'flex';
-//         map.invalidateSize(); // Redimensionner la carte
-//     }
-// }
+function getNextSundayFormatted() {
+    // Créer un objet Date avec la date actuelle
+    const today = new Date();
+    // Obtenir le jour de la semaine (0 pour dimanche, 1 pour lundi, ..., 6 pour samedi)
+    const dayOfWeek = today.getDay();
+    // Calculer le nombre de jours à ajouter pour atteindre le dimanche suivant
+    const daysUntilSunday = (7 - dayOfWeek) % 7; // Si aujourd'hui est dimanche, daysUntilSunday sera 0
+    // Ajouter les jours nécessaires à la date actuelle
+    today.setDate(today.getDate() + daysUntilSunday);
 
-// // Appeler la fonction resetDisplay lors du chargement de la page
-// window.addEventListener('load', resetDisplay);
+    // Formater la date avec Intl.DateTimeFormat
+    const formatter = new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    return formatter.format(today);
+}
+function formatDateWithIntl(date) {
+    const formatter = new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+    return formatter.format(date); 
+}
+// messages défilants
+const date=getNextSundayFormatted()
+const sp="la halle de St Pardoux La Rivière"
+const cr="l'église de Champs-Romain"
+const message2=`⚠️Pas de sortie organisée ce dimanche ${date} 😥😪😭`
+const message1=`🚴Rendez-vous dimanche ${date} à 9h devant ${sp} pour la sortie VTT dominicale ! 🚴🚴`
+document.querySelector('.marquee-content span').textContent=message2
+
+const datenow=new Date()
+console.log(formatDateWithIntl(datenow))
 
 
 // Variables globales
