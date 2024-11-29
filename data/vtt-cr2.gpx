@@ -7,9 +7,6 @@
     Larret puis direction St Saud par le Moulin du pont. On termine cette boucle en passant par Les Pierres
     Blanches direction Champs-Romain.</desc>
     <color>006400</color>
-    <gain>503m</gain>
-    <loss>505m</loss>
-    <calculGainLoss>Calculés avec un seuil de 10 mètres et un lissage sur 5 points</calculGainLoss>
   </metadata>
   <trk>
     <trkseg>

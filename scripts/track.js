@@ -103,8 +103,7 @@ function parseGPX(gpxData) {
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
     const GPXname = nameTag || 'No Name';
     const GPXdesc = descTag || 'No Description';
-    const GPXgain = gainTag || 'No Gain';
-    const GPXloss = lossTag || 'No Loss';
+
 
     let coordinates = [];
     let elevations = [];
@@ -122,11 +121,11 @@ function parseGPX(gpxData) {
         }
     }
 
-    return { coordinates, elevations, GPXcolor, GPXname, GPXdesc, GPXgain,GPXloss };
+    return { coordinates, elevations, GPXcolor, GPXname, GPXdesc };
 }
 
 // Afficher le tracé avec la couleur spécifique et la timeline
-function displayTrack(coordinates, elevations, color, name, desc,gain,loss) {
+function displayTrack(coordinates, elevations, color, name, desc) {
  
     const polyline = L.polyline(coordinates, { color: 'red', weight: 3 }).addTo(map);
     polylines.push(polyline);
@@ -134,9 +133,7 @@ function displayTrack(coordinates, elevations, color, name, desc,gain,loss) {
    //récupérations des infos
     document.getElementById('trackName').textContent = `"${name}"`.toUpperCase();
     document.getElementById('trackDesc').textContent = `${desc}`;
-    document.getElementById('gain').textContent = `${gain}`;
-    document.getElementById('loss').textContent = `${loss}`;
-   
+  
     createElevationChart(elevations, coordinates);
 
    

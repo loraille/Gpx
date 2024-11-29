@@ -3,10 +3,7 @@
   <metadata>
     <name>la boucle par Javerlhac</name>
     <desc>Pas encore de description pour cette boucle.</desc>
-    <color>006400</color>
-    <gain>946m</gain>
-    <loss>947m</loss>
-    <calculGainLoss>Calculés avec un seuil de 10 mètres et un lissage sur 5 points</calculGainLoss>
+    <color>fcba03</color>
   </metadata>
   <trk>
     <name><![CDATA[240918125516 on AllTrails]]></name>

@@ -54,7 +54,7 @@ h3{
 }
 p{
     margin: 0;
-    font-size:small;
+    font-size:medium;
 }
 ol{
   font-size: larger;
@@ -82,12 +82,11 @@ container{
   flex-direction: column;
   align-items: flex-start;
   width: 50vw;
-  /* height: 100vh; */
   overflow-y: scroll;
   scrollbar-width: thin;
-  padding: 10px;
   color: #f8f9fa;
   background-color: #2a343e;
+  padding-bottom: 40px
  }
 
 #pageAccueil h2{
@@ -101,15 +100,18 @@ container{
 #pageAccueil h3{
   margin-bottom: 10px;
   font-size: 23px;
+  margin-left: 10px;
 }
 #pageAccueil p{
   font-size: 18px;
+  margin: 0px 10px;
 }
 .section{
   border-top: 1px solid white;
-  padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 100%;
+ 
 }
 .marquee {
   display: flex;
@@ -212,7 +214,7 @@ video{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 47vw;
   margin-top: 10px;
   margin-bottom: 10px;
 }

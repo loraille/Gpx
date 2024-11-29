@@ -5,15 +5,6 @@
     <desc>Départ depuis l'église de St Pardoux pour une boucle sportive.</desc>
   </metadata>
   <trk>
-    <name><![CDATA[trail-sp1]]></name>
-    <extensions>
-      <line xmlns="http://www.topografix.com/GPX/gpx_style/0/2">
-        <color>0000FF</color>
-        <gain>157m</gain>
-        <loss>157m</loss>
-        <calculGainLoss>Calculés avec un seuil de 10 mètres et un lissage sur 5 points</calculGainLoss>
-      </line>
-    </extensions>
     <trkseg>
       <trkpt lat="45.494616" lon="0.745949">
         <ele>143.5</ele>

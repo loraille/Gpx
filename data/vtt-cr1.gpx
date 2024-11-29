@@ -4,9 +4,6 @@
     <name>Sauts de St Saud</name>
     <desc>Départ de l'église de Champs-Romain en direction de St Saud. Une descente dans les bois à pic avec la remontée qui pique juste derrière. De St Saud direction Abjat sur Bandiat et on termine la boucle par un retour sur Champs-Romain.</desc>
     <color>de0bd3</color>
-    <gain>458m</gain>
-    <loss>462m</loss>
-    <calculGainLoss>Calculés avec un seuil de 10 mètres et un lissage sur 5 points</calculGainLoss>
   </metadata>
   <trk>
     <name><![CDATA[mbl2puchcjwytux7lmkz]]></name>
