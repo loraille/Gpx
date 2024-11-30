@@ -61,7 +61,7 @@ let trackData = [];
 
 
 // Gestion des boutons pour charger les traces
-document.getElementById('btnVtt').addEventListener('click', () => {
+document.getElementById('mblVtt').addEventListener('click', () => {
     document.getElementById('pageAccueil').style.display = 'none';
     document.getElementById('map').style.display = 'flex';
       resetMap();
@@ -150,6 +150,7 @@ function loadGPXFiles(gpxFiles) {
 
                 if (loadedFilesCount === totalFiles) {
                     displayTracks(trackData);
+                    console.log('trackData',trackData)
                 }
             })
             .catch(error => console.error(error));
@@ -249,4 +250,26 @@ function resetMap() {
     map.setView([0, 0], 2);
 }
 
-
+document.addEventListener('DOMContentLoaded', function() {
+    const mapElement = document.getElementById('map');
+    const selectionTrackElement = document.querySelector('.selectionTrack');
+  
+    function updateSelectionTrackVisibility() {
+      if (window.getComputedStyle(mapElement).display === 'flex') {
+        selectionTrackElement.classList.add('visible');
+      } else {
+        selectionTrackElement.classList.remove('visible');
+      }
+    }
+  
+    // Appel initial pour vérifier l'état au chargement de la page
+    updateSelectionTrackVisibility();
+  
+    // Ajoutez un écouteur d'événement pour vérifier les changements de style
+    const observer = new MutationObserver(updateSelectionTrackVisibility);
+    observer.observe(mapElement, { attributes: true, attributeFilter: ['style'] });
+  
+    // Vous pouvez également ajouter un écouteur d'événement pour les changements de classe
+    mapElement.addEventListener('classChanged', updateSelectionTrackVisibility);
+  });
+  
