@@ -126,7 +126,7 @@ const sp="la halle de St Pardoux La Rivière"
 const cr="l'église de Champs-Romain"
 const message2=`⚠️Pas de sortie organisée ce dimanche ${date} 😥😪😭`
 const message1=`🚴Rendez-vous ce dimanche ${date} à 9h devant ${sp} pour la sortie VTT dominicale ! 🚴🚴`
-const message3=`⚠️Pas encore de choix sur la sortie VTT de ce dimanche ${date} 😥😪😭`
+const message3=`⚠️Pas encore de choix sur la sortie VTT de ce dimanche ${date} 😬😬😬`
 document.querySelector('.marquee-content span').textContent=message3
 
 const datenow=new Date()

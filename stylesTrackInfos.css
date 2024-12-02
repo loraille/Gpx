@@ -8,7 +8,6 @@
   justify-content: flex-start;
   align-items:center;
   width: 50vw;
-  /* background-color: #8194a7; */
   background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(115,115,115,1) 55%, rgba(255,255,255,1) 100%);
   overflow-y: auto;
   scrollbar-width: thin;
@@ -27,7 +26,7 @@
   align-items: flex-end;
 }
 #trackActivity{
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .titre{
@@ -35,6 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 .miniature{
   height: 5rem;
@@ -209,5 +209,40 @@ span{
   html {
       font-size: 55%;
   }
+  #trackInfo{
+    width: 100vw;
+  }
+  #map{
+    width: 100vw !important;
+    height: 40vh;
+  }
+ container{
+  display: block !important
+ }
+ .chart{
+  width: 100vw;
+  height: 35vh;
+}
+#myChart {
+  height: 30vh;
+  width: 90vw;
+  align-items: center;
+}
+#map3d{
+  width:90vw;
+  height: 40vh;
 
+}
+#threejs-container {
+  width: 89vw;
+  height: 39vh;
+}
+/* .lil-gui {
+  position: absolute;
+  top:40vh;
+  right: 1rem;
+  z-index: 10;
+width: 15rem !important;
+background:rgb(126, 126, 126);
+} */
 }

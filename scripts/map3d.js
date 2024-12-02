@@ -164,7 +164,6 @@ function updatePoint(lat, lon, ele, isPointModified) {
     userPoint.position.set(x, y, z);
 }
 
-
 function animate() {
     requestAnimationFrame(animate);
 
@@ -221,5 +220,20 @@ function resetView() {
     gui.updateDisplay();
 }
 
-    init(trackIndex);
-    animate();
+// Fonction pour mettre à jour les dimensions du renderer et de la caméra
+function updateRendererSize() {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+}
+
+// Ajoutez un gestionnaire d'événements pour le redimensionnement de la fenêtre
+window.addEventListener('resize', updateRendererSize);
+
+// Appelez cette fonction initialement pour définir les dimensions correctes
+updateRendererSize();
+
+init(trackIndex);
+animate();

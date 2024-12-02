@@ -55,6 +55,7 @@ for (let img of imgInfos) {
 document.getElementById('backTracks').addEventListener('click',()=>{
     window.location.href = `index.html?index=${selectedActivity}`;
 })
+
 document.getElementById('trackActivity').textContent=activityTracks
 //download map
 document.getElementById('trackDownload').href=trackIndex
