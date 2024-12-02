@@ -1,30 +1,22 @@
 //menu burger
-const menuMobile=document.querySelector('.menuMobile')
-const menu= document.getElementById('mobileCtrl')
-let menuContent=false
-menuMobile.addEventListener('click',()=>{
-menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-if(menuContent===false){
-    menuContent=true
-}else{
-    menuContent=false
-}
-})
+const menuMobile = document.querySelector('.menuMobile');
+const menu = document.getElementById('mobileCtrl');
+let menuContent = false;
+menuMobile.addEventListener('click', () => {
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    menuContent = !menuContent;
+});
 
 function checkWindowWidth(element) {
     const thresholdWidth = 800; // Définissez la largeur seuil au-dessus de laquelle vous souhaitez masquer l'élément
 
     if (window.innerWidth > thresholdWidth) {
-       element.style.display = 'none';
-    }else{
-        if(menuContent===true){
+        element.style.display = 'none';
+    } else {
+        if (menuContent) {
             element.style.display = 'block'; // Ou toute autre valeur de display que vous souhaitez utiliser
         }
-        
     }
-   
-   
-
 }
 
 // Appeler la fonction au chargement de la page
@@ -39,30 +31,29 @@ window.addEventListener('resize', () => {
 
 // Gestion des boutons version WEB pour charger les traces
 document.getElementById('btnVtt').addEventListener('click', () => {
-    displayAcitvity ('vtt')
+    displayAcitvity('vtt');
 });
 document.getElementById('btnCourse').addEventListener('click', () => {
-    displayAcitvity ('course')
+    displayAcitvity('course');
 });
 document.getElementById('btnTrail').addEventListener('click', () => {
-    displayAcitvity ('trail')
+    displayAcitvity('trail');
 });
 // Gestion des boutons version MOBILE pour charger les traces
 document.getElementById('mblVtt').addEventListener('click', () => {
-    displayAcitvity ('vtt')
-    menuMobile.style.display='none'
+    displayAcitvity('vtt');
+    menuMobile.style.display = 'none';
 });
 document.getElementById('mblCrs').addEventListener('click', () => {
-    displayAcitvity ('course')
-    menuMobile.style.display='none'
+    displayAcitvity('course');
+    menuMobile.style.display = 'none';
 });
 document.getElementById('mblTrail').addEventListener('click', () => {
-    displayAcitvity ('trail')
-    menuMobile.style.display='none'
+    displayAcitvity('trail');
+    menuMobile.style.display = 'none';
 });
 
-
-const displayAcitvity= (activity)=>{
+const displayAcitvity = (activity) => {
     document.getElementById('pageAccueil').style.display = 'none';
     document.getElementById('map').style.display = 'flex';
     resetMap();
@@ -71,36 +62,35 @@ const displayAcitvity= (activity)=>{
     // Accéder à la variable dynamique en utilisant window
     traceGroups = window[variableName];
     readTracks();
-    map.invalidateSize()
-    activityShow=activity
-}
+    map.invalidateSize();
+    activityShow = activity;
+};
+
 //affiche le menu de navigation des tracks si map est visible
 document.addEventListener('DOMContentLoaded', function() {
     const mapElement = document.getElementById('map');
     const selectionTrackElement = document.querySelector('.selectionTrack');
-  
+
     function updateSelectionTrackVisibility() {
-      if (window.getComputedStyle(mapElement).display === 'flex') {
-        selectionTrackElement.classList.add('visible');
-      } else {
-        selectionTrackElement.classList.remove('visible');
-      }
+        if (window.getComputedStyle(mapElement).display === 'flex') {
+            selectionTrackElement.classList.add('visible');
+        } else {
+            selectionTrackElement.classList.remove('visible');
+        }
     }
-  
+
     // Appel initial pour vérifier l'état au chargement de la page
     updateSelectionTrackVisibility();
-  
+
     // Ajoutez un écouteur d'événement pour vérifier les changements de style
     const observer = new MutationObserver(updateSelectionTrackVisibility);
     observer.observe(mapElement, { attributes: true, attributeFilter: ['style'] });
-  
+
     // Vous pouvez également ajouter un écouteur d'événement pour les changements de classe
     mapElement.addEventListener('classChanged', updateSelectionTrackVisibility);
-  });
+});
 
-  //////////////////////////Bandeau defilant///////////////////
-  
-
+//////////////////////////Bandeau defilant///////////////////
 
 function getNextSundayFormatted() {
     // Créer un objet Date avec la date actuelle
@@ -121,21 +111,22 @@ function getNextSundayFormatted() {
 
     return formatter.format(today);
 }
+
 function formatDateWithIntl(date) {
     const formatter = new Intl.DateTimeFormat('fr-FR', {
         day: '2-digit',
         month: 'long',
         year: 'numeric'
     });
-    return formatter.format(date); 
+    return formatter.format(date);
 }
-// messages défilants
-const date=getNextSundayFormatted()
-const sp="la halle de St Pardoux La Rivière"
-const cr="l'église de Champs-Romain"
-const message2=`⚠️Pas de sortie organisée ce dimanche ${date} 😥😪😭`
-const message1=`🚴Rendez-vous ce dimanche ${date} à 9h devant ${sp} pour la sortie VTT dominicale ! 🚴🚴`
-const message3=`⚠️Pas encore de choix sur la sortie VTT de ce dimanche ${date} 😬😬😬`
-document.querySelector('.marquee-content span').textContent=message3
 
-const datenow=new Date()
+// messages défilants
+const nextSundayDate = getNextSundayFormatted();
+const startingPoint = "la halle de St Pardoux La Rivière";
+const churchRomain = "l'église de Champs-Romain";
+const noSortie= `⚠️Pas de sortie organisée ce dimanche ${nextSundayDate} 😥😪😭`;
+const planified= `🚴Rendez-vous ce dimanche ${nextSundayDate} à 9h devant ${startingPoint} pour la sortie VTT dominicale ! 🚴🚴`;
+const toPlanified= `⚠️Pas encore de choix sur la sortie VTT de ce dimanche ${nextSundayDate} 😬😬😬`;
+document.querySelector('.marquee-content span').textContent =toPlanified;
+
