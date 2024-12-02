@@ -13,16 +13,33 @@
         <a href="index.html"><h1>Sports Outdoor Périgord Vert</h1></a>
     </header>
     <container>
+        <div class="menuMobile">
+            <i class='bx bx-menu'></i>
+        </div>
         <div id="mobileCtrl">
-            <div id="mblVtt">vtt</div>
-            <div id="mblCrs">course</div>
-            <div id="mblTrail">trail</div>
+            <div class="mbl" id="mblVtt">
+                <h2>VTT</h2>
+                <h3>Tous les parcours</h3>
+            </div>
+            <div class="mbl" id="mblCrs">
+                <h2>Course</h2>
+                <h3>Tous les parcours</h3>
+            </div>
+            <div class="mbl" id="mblTrail">
+                <h2>Trail</h2>
+                <h3>Tous les parcours</h3>
+            </div>
+            
         </div>
         <div id="map"></div>
         <div class="selectionTrack">
-            <div id="previous"><</div>
-            <div id="selectTrack">track</div>
-            <div id="previous">></div>
+            <div class="navTrack" id="previous">
+                <i class='bx bxs-left-arrow'></i>
+            </div>
+            <div class="navTrack" id="selectTrack">Nom du tracé</div>
+            <div class="navTrack" id="next">
+                <i class='bx bxs-right-arrow'></i>
+            </div>
         </div>
         <div id="pageAccueil">
             <div class="marquee">
@@ -50,6 +67,7 @@
                     <li>Choisir parmi les 3 catégories proposées</li>
                     <li>Choisir parmi les tracés</li>
                     <li>Visualiser sa sélection</li>
+                    <li>Télécharger le tracé</li>
                 </ol>
                 <div class="videoContainer">
                     <video  controls autoplay loop muted>
@@ -121,6 +139,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
     <script src="./scripts/geoFunction.js"></script>
     <script src="./scripts/tracks.js"></script>
+    <script src="./scripts/controle.js"></script>
     <script src="./scripts/map2d.js"></script>
 </body>
 </html>

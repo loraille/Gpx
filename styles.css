@@ -35,6 +35,7 @@ html{
 	  display: flex;
     flex-direction: column;
 	  height: 100vh;
+    background-color: #3e4d5c;
 }
 a {
   color: inherit;
@@ -87,8 +88,8 @@ container{
   overflow-y: scroll;
   scrollbar-width: thin;
   color: #f8f9fa;
-  background-color: #2a343e;
-  padding-bottom: 4rem;
+
+  /* padding-bottom: 4rem; */
  }
 
 #pageAccueil h2{
@@ -218,7 +219,7 @@ video{
   align-items: center;
   width: 97%;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 #map {
@@ -341,61 +342,122 @@ video{
 /* ------------------------- */
 /* ----affichage carte------ */
 /* ------------------------- */
+.menuMobile{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: #272735;
+  height: 7vh;
+  font-size: 4rem;
+  border:#ffffff 1px solid;
+  border-radius: 3px;
+  margin: 1rem;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.menuMobile:hover{
+color: #192232;
+border:0.2rem solid #192232;
+background-color: #ffffff;
+}
 #mobileCtrl{
   display:none;
   font-size: 2rem;
- 
 }
-#mblVtt{
+.mbl {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: red;
   height: 7vh;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
 }
-#mblCrs{
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: blue;
-height: 7vh;
+
+.mbl h2, .mbl h3 {
+  position: absolute;
+  transition: opacity 0.3s ease;
 }
-#mblTrail{
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: green;
-height: 7vh;
+
+.mbl h2 {
+  opacity: 1;
 }
+
+.mbl h3 {
+  opacity: 0;
+}
+
+.mbl:hover h2 {
+  opacity: 0;
+}
+
+.mbl:hover h3 {
+  opacity: 1;
+}
+
+#mblVtt {
+  background-color: #3CB371;
+}
+
+#mblCrs {
+  background-color: #1E90FF;
+}
+
+#mblTrail {
+  background-color: #D2691E;
+}
+
+#mblVtt:hover, #mblCrs:hover, #mblTrail:hover {
+  background-color: #ffffff;
+}
+
 .selectionTrack{
 display: none;
 font-size: 2rem;
 height: auto;
+margin: 1rem;
+margin-top: 2rem;
+color:#ffffff;
+height: auto;
+gap:5vw
+}
 
-}
-#previous{
-width: 15vw;
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: #2a343e;
-}
 #selectTrack{
-width: 70vw;
-display: flex;
-align-items: center;
-justify-content: center;
+width: 60vw;
+font-size: 2.5rem;
+text-align: center; /* Centre le texte horizontalement */
+white-space: wrap; /* Empêche le texte de se retourner à la ligne */
+overflow: hidden;
 }
-#previous{
-width: 15vw;
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: #2a343e;
+
+.navTrack{
+  width: 15vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 2rem;
+  width: 10%;
+  border:0.2rem solid rgb(255, 255, 255);
+  background-color: #192232;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  transition: all 0.45s ease;
+  cursor: pointer;
 }
+.navTrack:hover{
+  color: #192232;
+  border:0.2rem solid #192232;
+  background-color: #ffffff;
+  }
 @media (max-width: 800px) {
   html {
     font-size: 50%;
+  }
+  h1{
+    margin-left: 0;
   }
   body{
     overflow-y: auto;
@@ -407,7 +469,7 @@ background-color: #2a343e;
   }
   container {
     display: block;
-    width: 100vw; /* Ajoutez cette ligne */
+    width: 100vw; 
   }
   #pageAccueil {
     width: 100vw;
@@ -424,9 +486,11 @@ background-color: #2a343e;
    .section{
     padding-top: 2rem;
   }
-  #mobileCtrl{
-    display: block;
+  .menuMobile{
+  display: flex;
+  
   }
+
   .selectionTrack {
     display: none; /* Par défaut, masquez .selectionTrack */
   }

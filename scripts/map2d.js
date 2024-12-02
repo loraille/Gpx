@@ -6,45 +6,6 @@ if (activity===''){
     activityShow=activity
 }
 
-console.log('activity',activity)
-
-function getNextSundayFormatted() {
-    // Créer un objet Date avec la date actuelle
-    const today = new Date();
-    // Obtenir le jour de la semaine (0 pour dimanche, 1 pour lundi, ..., 6 pour samedi)
-    const dayOfWeek = today.getDay();
-    // Calculer le nombre de jours à ajouter pour atteindre le dimanche suivant
-    const daysUntilSunday = (7 - dayOfWeek) % 7; // Si aujourd'hui est dimanche, daysUntilSunday sera 0
-    // Ajouter les jours nécessaires à la date actuelle
-    today.setDate(today.getDate() + daysUntilSunday);
-
-    // Formater la date avec Intl.DateTimeFormat
-    const formatter = new Intl.DateTimeFormat('fr-FR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-    });
-
-    return formatter.format(today);
-}
-function formatDateWithIntl(date) {
-    const formatter = new Intl.DateTimeFormat('fr-FR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-    });
-    return formatter.format(date); 
-}
-// messages défilants
-const date=getNextSundayFormatted()
-const sp="la halle de St Pardoux La Rivière"
-const cr="l'église de Champs-Romain"
-const message2=`⚠️Pas de sortie organisée ce dimanche ${date} 😥😪😭`
-const message1=`🚴Rendez-vous dimanche ${date} à 9h devant ${sp} pour la sortie VTT dominicale ! 🚴🚴`
-document.querySelector('.marquee-content span').textContent=message2
-
-const datenow=new Date()
-
 // Initialiser la carte
 const map = L.map('map').setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -60,38 +21,9 @@ let hoveredPolyline = null;
 let trackData = [];
 
 
-// Gestion des boutons pour charger les traces
-document.getElementById('mblVtt').addEventListener('click', () => {
-    document.getElementById('pageAccueil').style.display = 'none';
-    document.getElementById('map').style.display = 'flex';
-      resetMap();
-    traceGroups = vttGPX;
-    readTracks();
-    map.invalidateSize()
-    activityShow='vtt'
-});
-document.getElementById('btnCourse').addEventListener('click', () => {
-    document.getElementById('pageAccueil').style.display = 'none';
-    document.getElementById('map').style.display = 'flex';
-    resetMap();
-    traceGroups = courseGPX;
-    readTracks();
-    map.invalidateSize()
-    activityShow='course'
-});
-document.getElementById('btnTrail').addEventListener('click', () => {
-    document.getElementById('pageAccueil').style.display = 'none';
-    document.getElementById('map').style.display = 'flex';
-    resetMap();
-    traceGroups = trailGPX;
-    readTracks();
-    map.invalidateSize()
-    activityShow='trail'
-});
+
 // Affiche les tracks en fonction du retour vtt course trail
-
 if(activity!==null){
-
     if(activity.includes('vtt')){
         document.getElementById('pageAccueil').style.display = 'none';
         document.getElementById('map').style.display = 'flex';
@@ -150,7 +82,6 @@ function loadGPXFiles(gpxFiles) {
 
                 if (loadedFilesCount === totalFiles) {
                     displayTracks(trackData);
-                    console.log('trackData',trackData)
                 }
             })
             .catch(error => console.error(error));
@@ -191,6 +122,45 @@ function parseGPX(gpxData) {
     return { GPXcolor, GPXname, GPXdesc, trackCoordinates, trackElevations };
 }
 
+let currentTrackIndex = 0;
+if (document.getElementById('previous')){
+document.getElementById('previous').addEventListener('click', () => {
+    if (currentTrackIndex!==0){
+        currentTrackIndex -=1;
+    }else{
+        currentTrackIndex=trackData.length-1
+    }
+    updateTrackDisplay();
+});
+}
+if(document.getElementById('next')){
+document.getElementById('next').addEventListener('click', () => {
+    if (currentTrackIndex!==trackData.length-1){
+        currentTrackIndex +=1;
+    }else{
+        currentTrackIndex=0
+    }
+    updateTrackDisplay();
+});
+}  
+
+function updateTrackDisplay() {
+    polylines.forEach((polyline, index) => {
+        if (index === currentTrackIndex) {
+            polyline.setStyle({ opacity: 1, weight: 5 });
+        } else {
+            polyline.setStyle({ opacity: 0.3, weight: 3 });
+        }
+    });
+    if(document.getElementById('selectTrack')!==''){
+        const selectedTrack= document.getElementById('selectTrack')
+        selectedTrack.textContent=trackData[currentTrackIndex].name.toUpperCase()
+        selectedTrack.addEventListener('click',()=>{
+            window.location.href = `trackInfos.html?index=${trackData[currentTrackIndex].filename}&activity=${activityShow}`;
+        })
+     }
+}
+
 // Afficher les tracés avec gestion des interactions
 function displayTracks(trackData) {
     // Supprimer tous les tracés existants
@@ -225,7 +195,6 @@ function displayTracks(trackData) {
                 window.location.href = `trackInfos.html?index=${selectedGPXFile}&activity=${activityShow}`;
             }
         });
-
         polylines.push(polyline);
     });
 
@@ -233,6 +202,13 @@ function displayTracks(trackData) {
     const allCoordinates = trackData.flatMap(data => data.coordinates);
     const bounds = L.latLngBounds(allCoordinates);
     map.fitBounds(bounds);
+    //maj si on est en format mobile des tracks
+    const menuMobile=document.querySelector('.selectionTrack')
+    const computedStyle = window.getComputedStyle(menuMobile)
+    if(computedStyle.display!=="none"){
+        updateTrackDisplay()
+    }
+    
 }
 
 // Réinitialiser la carte
@@ -250,26 +226,5 @@ function resetMap() {
     map.setView([0, 0], 2);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const mapElement = document.getElementById('map');
-    const selectionTrackElement = document.querySelector('.selectionTrack');
-  
-    function updateSelectionTrackVisibility() {
-      if (window.getComputedStyle(mapElement).display === 'flex') {
-        selectionTrackElement.classList.add('visible');
-      } else {
-        selectionTrackElement.classList.remove('visible');
-      }
-    }
-  
-    // Appel initial pour vérifier l'état au chargement de la page
-    updateSelectionTrackVisibility();
-  
-    // Ajoutez un écouteur d'événement pour vérifier les changements de style
-    const observer = new MutationObserver(updateSelectionTrackVisibility);
-    observer.observe(mapElement, { attributes: true, attributeFilter: ['style'] });
-  
-    // Vous pouvez également ajouter un écouteur d'événement pour les changements de classe
-    mapElement.addEventListener('classChanged', updateSelectionTrackVisibility);
-  });
+
   
