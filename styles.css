@@ -215,6 +215,7 @@ video{
 
 .footer-txt{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 97%;

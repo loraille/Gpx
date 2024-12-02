@@ -1,8 +1,14 @@
 //menu burger
 const menuMobile=document.querySelector('.menuMobile')
 const menu= document.getElementById('mobileCtrl')
+let menuContent=false
 menuMobile.addEventListener('click',()=>{
 menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+if(menuContent===false){
+    menuContent=true
+}else{
+    menuContent=false
+}
 })
 
 function checkWindowWidth(element) {
@@ -10,11 +16,14 @@ function checkWindowWidth(element) {
 
     if (window.innerWidth > thresholdWidth) {
        element.style.display = 'none';
-       console.log('none')
-    } else {
-        element.style.display = 'block'; // Ou toute autre valeur de display que vous souhaitez utiliser
-        console.log('blk')
+    }else{
+        if(menuContent===true){
+            element.style.display = 'block'; // Ou toute autre valeur de display que vous souhaitez utiliser
+        }
+        
     }
+   
+   
 
 }
 
