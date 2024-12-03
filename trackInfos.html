@@ -16,14 +16,10 @@
     <header>
         <a href="index.html"><h1>Sports Outdoor Périgord Vert</h1></a>
     </header>
-    <container>
-        <!----------------->
+    <div class="container">
         <!-- cote gauche -->
-        <!----------------->
         <div id="map"></div>
-        <!----------------->
         <!-- cote droit -->
-        <!----------------->
         <div id="trackInfo">
             <!-- Retour -->
             <div class="retourContainer">
@@ -31,7 +27,7 @@
                     <a href="#" id="backTracks">
                         <img src="./img/retour.png" alt="retour" class="miniatureTitre">
                     </a>
-                   <h3> Retour aux tracés <span  id="trackActivity"></span></h3> 
+                   <h3> Retour aux tracés <span  id="trackActivity"></span></h3>
                 </div>
                 <!-- Down map -->
             <a id="trackDownload" href="#">
@@ -55,7 +51,7 @@
                 <div class="infosGroupe">
                     <img src="./img/distance.png" alt="distance"  class="imgInfo"/>
                     <p id="distance"></p>
-                </div>  
+                </div>
              </div>
             <!-- Description -->
             <div class="infoText">
@@ -70,7 +66,7 @@
             </div>
             <!-- Chart 2D -->
             <div class="titleContainer">
-                <div class="imgTitre"> 
+                <div class="imgTitre">
                     <img src="./img/elev.png" alt="tracks" class="miniatureTitre">
                     <h3>Elévations</h3>
                 </div>
@@ -85,8 +81,8 @@
                 <div id="myChart"></div>
             </div>
             <!-- Map 3D -->
-            <div class="titleContainer" >
-                <div class="imgTitre"> 
+            <div class="titleContainer">
+                <div class="imgTitre">
                     <img src="./img/map3d.png" alt="tracks" class="miniatureTitre">
                     <h3>Map 3D</h3>
                 </div>
@@ -96,16 +92,13 @@
                 <div id="threejs-container"></div>
             </div>
         </div>
-    </container>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
     <script src="./scripts/geoFunction.js"></script>
     <script src="./scripts/tracks.js"></script>
-    
     <script src="./scripts/track.js"></script>
     <script src="./scripts/map3d.js" type="module"></script>
-    
-    
 </body>
 </html>
