@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://sports-outdoor-perigord-vert.fr/sitemap.xml
