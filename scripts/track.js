@@ -20,7 +20,7 @@ const descriptionContainer=document.querySelectorAll('.titleContainer')
     }
     //applique les couleurs sur les descriptions
 for (e of descriptionContainer) {
-    e.style.backgroundColor=activityColor
+    e.style.border=`1px solid ${activityColor}`
 }
     //mecanique caché/affiché catégories
 let shown = false;
