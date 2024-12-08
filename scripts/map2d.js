@@ -1,3 +1,6 @@
+document.getElementById('yourGpx').addEventListener('click',()=>{
+    window.location.href = `trackInfos.html?&activity=accueil`;
+})
 const urlParams = new URLSearchParams(window.location.search);
 const activity = urlParams.get('index');
 if (activity===''){

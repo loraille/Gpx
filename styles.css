@@ -66,12 +66,21 @@ header{
     background-color: #272735;
     color: #ffffff;
     display: flex;
+    justify-content: space-between;
     height: 10vh;
     width: 100vw;
     align-items: center;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: italic;
-
+}
+#yourGpx{
+  margin-right: 3rem;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.45s ease;
+}
+#yourGpx:hover{
+  color:#ff2323;
 }
 container{
     display: flex;
@@ -467,6 +476,9 @@ overflow: hidden;
     justify-content: center;
     margin-left: 0;
     padding: 0;
+  }
+  #yourGpx{
+    display: none;
   }
   container {
     display: block;

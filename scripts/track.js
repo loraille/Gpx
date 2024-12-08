@@ -1,13 +1,43 @@
+import { display3d,display3dLocal } from "./map3d.js";
+
+
+// Obtenez les éléments pour la modale
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("yourGpx");
+var btnCloseModal = document.getElementsByClassName("close")[0];
+
+const closeModal=()=>{modal.style.display = "none"}
+const openModal=()=>{modal.style.display = "block"}
+
+// Lorsque l'utilisateur clique sur le bouton, ouvrez la modale
+btn.onclick = function() {
+   openModal();
+}
+// Lorsque l'utilisateur clique sur <span> (x), fermez la modale
+btnCloseModal.onclick = function() {
+    closeModal() ;
+}
+// Lorsque l'utilisateur clique n'importe où en dehors de la modale
+window.onclick = function(event) {
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
 // Récupérer le paramètre de requête 'index' pour afficher le tracé
 const urlParams = new URLSearchParams(window.location.search);
-const trackIndex = urlParams.get('index');
+let trackIndex = urlParams.get('index');
 const selectedActivity=urlParams.get('activity')
-console.log('tre',selectedActivity)
+
+//ouvre la modale si le lien vient du header depuis index.html
+if(selectedActivity==='accueil'){
+    openModal()
+}
+
 //valeur de l'activité
 let activityTracks = '';
 let activityColor=''
 const descriptionContainer=document.querySelectorAll('.titleContainer')
-
     if(urlParams.get('activity').includes('vtt')){
         activityTracks = '"VTT"';
         activityColor = '#3CB371';
@@ -17,13 +47,17 @@ const descriptionContainer=document.querySelectorAll('.titleContainer')
     }else if(urlParams.get('activity').includes('trail')){
         activityTracks = '"Trail"';
         activityColor = '#D2691E';
+    }else{
+        activityTracks = '"Accueil"';
+        document.querySelector('.retourContainer h3').textContent="Retour à l'accueil"
+        document.getElementById('trackDownload').style.display='none'
+        activityColor = '#8a961e';
     }
     //applique les couleurs sur les descriptions
-for (e of descriptionContainer) {
+for (let e of descriptionContainer) {
     e.style.border=`1px solid ${activityColor}`
 }
     //mecanique caché/affiché catégories
-let shown = false;
 const sections = document.querySelectorAll('.titleContainer .upDown');
 
 for (let img of sections) {
@@ -55,8 +89,10 @@ for (let img of imgInfos) {
 document.getElementById('backTracks').addEventListener('click',()=>{
     window.location.href = `index.html?index=${selectedActivity}`;
 })
+if (selectedActivity!=='accueil'){
+    document.getElementById('trackActivity').textContent=activityTracks
+}
 
-document.getElementById('trackActivity').textContent=activityTracks
 //download map
 document.getElementById('trackDownload').href=trackIndex
 
@@ -73,8 +109,9 @@ let options = {};
 let elevationChart = null;
 
 
-// Lire le fichier GPX
-fetch(trackIndex)
+if(trackIndex!==null){
+    // Lire le fichier GPX
+    fetch(trackIndex)
     .then(response => {
         if (!response.ok) {
             throw new Error(`Erreur lors du chargement du fichier GPX: ${trackIndex}`);
@@ -82,11 +119,12 @@ fetch(trackIndex)
         return response.text();
     })
     .then(gpxData => {
-        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss } = parseGPX(gpxData);
-        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss);
+        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData);
+        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc);
+        display3d(trackIndex)
     })
     .catch(error => console.error(error));
-
+}
 // Parser le contenu GPX pour extraire les coordonnées, les élévations et la couleur
 function parseGPX(gpxData) {
     const parser = new DOMParser();
@@ -97,8 +135,7 @@ function parseGPX(gpxData) {
     let colorTag = xmlDoc.getElementsByTagName('color')[0]?.textContent?.trim();
     let nameTag = xmlDoc.getElementsByTagName('name')[0]?.textContent?.trim();
     let descTag = xmlDoc.getElementsByTagName('desc')[0]?.textContent?.trim();
-    let gainTag = xmlDoc.getElementsByTagName('gain')[0]?.textContent?.trim();
-    let lossTag = xmlDoc.getElementsByTagName('loss')[0]?.textContent?.trim();
+   
    
     // Définir les valeurs par défaut si les balises sont absentes ou vides
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
@@ -309,6 +346,31 @@ function calculateDistances(coordinates) {
 }
 
 
+// Fonction pour lire le fichier GPX chargé par l'utilisateur
+document.getElementById('gpxFileInput').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+         // Supprimer tous les tracés existants
+    polylines.forEach(polyline => map.removeLayer(polyline));
+    polylines = [];
 
+    // Réinitialiser les variables globales
+    // let loadedFilesCount = 0;
+    // let totalFiles = 0;
+    // let trackData = [];
 
+    // Réinitialiser la vue de la carte
+    map.setView([0, 0], 2);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const gpxData = e.target.result;
+            const { coordinates, elevations, GPXcolor, GPXname, GPXdesc } = parseGPX(gpxData);
+            displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc);
+         
+            display3dLocal(gpxData)
+        };
+        reader.readAsText(file);
+        closeModal();
+    }
+});
 
