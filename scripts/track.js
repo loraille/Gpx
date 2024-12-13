@@ -1,64 +1,71 @@
 // Récupérer le paramètre de requête 'index' pour afficher le tracé
 const urlParams = new URLSearchParams(window.location.search);
-const trackIndex = urlParams.get('index');
-const selectedActivity=urlParams.get('activity')
-console.log('tre',selectedActivity)
-//valeur de l'activité
+let trackIndex = '';
+let selectedActivity = '';
+trackIndex = urlParams.get('index');
+selectedActivity = urlParams.get('activity');
+// Valeur de l'activité
 let activityTracks = '';
-let activityColor=''
-const descriptionContainer=document.querySelectorAll('.titleContainer')
+let activityColor = '';
+const descriptionContainer = document.querySelectorAll('.titleContainer');
 
-    if(urlParams.get('activity').includes('vtt')){
-        activityTracks = '"VTT"';
-        activityColor = '#3CB371';
-    }else if(urlParams.get('activity').includes('course')){
-        activityTracks = '"Course"';
-        activityColor = '#1E90FF';
-    }else if(urlParams.get('activity').includes('trail')){
-        activityTracks = '"Trail"';
-        activityColor = '#D2691E';
-    }
-    //applique les couleurs sur les descriptions
-for (e of descriptionContainer) {
-    e.style.border=`1px solid ${activityColor}`
+if (urlParams.get('activity').includes('vtt')) {
+    activityTracks = '"VTT"';
+    activityColor = '#3CB371';
+} else if (urlParams.get('activity').includes('course')) {
+    activityTracks = '"Course"';
+    activityColor = '#1E90FF';
+} else if (urlParams.get('activity').includes('trail')) {
+    activityTracks = '"Trail"';
+    activityColor = '#D2691E';
+} else if (urlParams.get('activity').includes('accueil')) {
+    activityTracks = '"Accueil"';
+    activityColor = '#8d6000';
 }
-    //mecanique caché/affiché catégories
+
+// Applique les couleurs sur les descriptions
+for (e of descriptionContainer) {
+    e.style.border = `1px solid ${activityColor}`;
+}
+
+// Mécanique caché/affiché catégories
 let shown = false;
 const sections = document.querySelectorAll('.titleContainer .upDown');
 
 for (let img of sections) {
-    img.style.cursor='pointer'
+    img.style.cursor = 'pointer';
     img.addEventListener('click', () => {
         let nextSibling = img.closest('.titleContainer').nextElementSibling;
         while (nextSibling && !nextSibling.classList.contains('titleContainer')) {
             if (nextSibling.style.display === 'none') {
                 // Restaurer l'affichage en utilisant la valeur stockée
                 nextSibling.style.display = nextSibling.getAttribute('data-default-display') || '';
-                img.src='../img/up.png'
+                img.src = '../img/up.png';
             } else {
                 // Masquer l'élément et stocker la valeur par défaut
                 nextSibling.setAttribute('data-default-display', window.getComputedStyle(nextSibling).display);
                 nextSibling.style.display = 'none';
-                img.src='../img/down.png'
+                img.src = '../img/down.png';
             }
             nextSibling = nextSibling.nextElementSibling;
         }
     });
 }
-//couleur de fond des images infos
-const imgInfos=document.querySelectorAll('.imgInfo')
+
+// Couleur de fond des images infos
+const imgInfos = document.querySelectorAll('.imgInfo');
 for (let img of imgInfos) {
-    img.style.backgroundColor=activityColor 
+    img.style.backgroundColor = activityColor;
 }
 
-//retour
-document.getElementById('backTracks').addEventListener('click',()=>{
+// Retour
+document.getElementById('backTracks').addEventListener('click', () => {
     window.location.href = `index.html?index=${selectedActivity}`;
-})
+});
 
-document.getElementById('trackActivity').textContent=activityTracks
-//download map
-document.getElementById('trackDownload').href=trackIndex
+document.getElementById('trackActivity').textContent = activityTracks;
+// Download map
+document.getElementById('trackDownload').href = trackIndex;
 
 // Initialiser la carte
 const map = L.map('map').setView([0, 0], 10);
@@ -72,7 +79,6 @@ let step = 20;
 let options = {};
 let elevationChart = null;
 
-
 // Lire le fichier GPX
 fetch(trackIndex)
     .then(response => {
@@ -82,10 +88,13 @@ fetch(trackIndex)
         return response.text();
     })
     .then(gpxData => {
-        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss } = parseGPX(gpxData);
-        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc,GPXgain,GPXloss);
+        const { coordinates, elevations, GPXcolor, GPXname, GPXdesc} = parseGPX(gpxData);
+        displayTrack(coordinates, elevations, GPXcolor, GPXname, GPXdesc);
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+        console.error(error);
+        alert(`Erreur lors du chargement du fichier GPX: ${error.message}`);
+    });
 
 // Parser le contenu GPX pour extraire les coordonnées, les élévations et la couleur
 function parseGPX(gpxData) {
@@ -97,14 +106,12 @@ function parseGPX(gpxData) {
     let colorTag = xmlDoc.getElementsByTagName('color')[0]?.textContent?.trim();
     let nameTag = xmlDoc.getElementsByTagName('name')[0]?.textContent?.trim();
     let descTag = xmlDoc.getElementsByTagName('desc')[0]?.textContent?.trim();
-    let gainTag = xmlDoc.getElementsByTagName('gain')[0]?.textContent?.trim();
-    let lossTag = xmlDoc.getElementsByTagName('loss')[0]?.textContent?.trim();
-   
+  
+
     // Définir les valeurs par défaut si les balises sont absentes ou vides
     const GPXcolor = colorTag ? `#${colorTag}` : '#ff0000';
     const GPXname = nameTag || 'No Name';
     const GPXdesc = descTag || 'No Description';
-
 
     let coordinates = [];
     let elevations = [];
@@ -127,18 +134,16 @@ function parseGPX(gpxData) {
 
 // Afficher le tracé avec la couleur spécifique et la timeline
 function displayTrack(coordinates, elevations, color, name, desc) {
- 
     const polyline = L.polyline(coordinates, { color: 'red', weight: 3 }).addTo(map);
     polylines.push(polyline);
 
-   //récupérations des infos
+    // Récupérations des infos
     document.getElementById('trackName').textContent = `"${name}"`.toUpperCase();
     document.getElementById('trackDesc').textContent = `${desc}`;
-  
+
     createElevationChart(elevations, coordinates);
 
-   
-    //récupération des limites poura afficher la map
+    // Récupération des limites pour afficher la map
     const bounds = L.latLngBounds(coordinates);
     map.fitBounds(bounds);
 }
@@ -170,7 +175,7 @@ function createElevationChart(elevations, coordinates) {
             if (datum && datum.lat && datum.lon) {
                 updateDynamicMarker(datum.lat, datum.lon, datum.elev); // Met à jour le marqueur dynamique sur la carte
                 return {
-                    //renvoi en légende
+                    // Renvoi en légende
                     title: `Distance: ${datum.dist.toFixed(1)} km`,
                     content: `Élévation: ${datum.elev.toFixed(0)} m`
                 };
@@ -277,7 +282,7 @@ chartContainer.addEventListener('mouseover', function () {
     }
 });
 
-// supprimer le marqueur
+// Supprimer le marqueur
 chartContainer.addEventListener('mouseout', function () {
     // Supprimer le marqueur de la carte si on sort du graphique
     if (dynamicMarker) {
@@ -307,8 +312,3 @@ function calculateDistances(coordinates) {
 
     return distances;
 }
-
-
-
-
-

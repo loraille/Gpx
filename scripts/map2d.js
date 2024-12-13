@@ -225,6 +225,5 @@ function resetMap() {
     // Réinitialiser la vue de la carte
     map.setView([0, 0], 2);
 }
+//bouton pour envoyer son gpx
 
-
-  
