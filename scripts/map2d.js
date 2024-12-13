@@ -1,3 +1,6 @@
+document.getElementById('yourGpx').addEventListener('click',()=>{
+    window.location.href = `trackInfos.html?&activity=accueil`;
+})
 const urlParams = new URLSearchParams(window.location.search);
 const activity = urlParams.get('index');
 if (activity===''){
@@ -225,5 +228,6 @@ function resetMap() {
     // Réinitialiser la vue de la carte
     map.setView([0, 0], 2);
 }
-//bouton pour envoyer son gpx
 
+
+  

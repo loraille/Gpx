@@ -69,8 +69,6 @@ async function init(gpx) {
 
         initialCameraPosition = camera.position.clone();
         initialCameraRotation = camera.rotation.clone();
-
-        updatePoint(42.80133, 0.55807, 950, true);
     } catch (error) {
         console.error('Erreur lors du chargement du fichier GPX', error);
     }
@@ -130,39 +128,7 @@ function updateElevationScale(scale) {
     }
 }
 
-function updatePoint(lat, lon, ele, isPointModified) {
-    // Mise à jour des coordonnées uniquement si isPointModified est vrai
-    if (isPointModified && userPoint) {
-        userPoint.userData = { originalLat: lat, originalLon: lon, originalEle: ele };
-    }
 
-    // Recalculer la position du point utilisateur
-    const coordResult = {
-        X: findMinMax(coord, 'x'),
-        Y: findMinMax(coord, 'y'),
-        Z: findMinMax(coord, 'z')
-    };
-    const moyX = (coordResult.X.max + coordResult.X.min) / 2;
-    const moyY = (coordResult.Y.max + coordResult.Y.min) / 2;
-    const moyZ = coordResult.Z.min;
-
-    const scalingFactor = 1000;
-    const elevationScale = 40 - settings.Elevation;
-    const x = (lon - moyX) * scalingFactor;
-    const y = (lat - moyY) * scalingFactor;
-    const z = (ele - moyZ) / elevationScale;
-
-    if (!userPoint) {
-        // Créer le point utilisateur s'il n'existe pas
-        const geometry = new THREE.SphereGeometry(1, 16, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-        userPoint = new THREE.Mesh(geometry, material);
-        trackGroup.add(userPoint);
-    }
-
-    // Mettre à jour la position du point utilisateur
-    userPoint.position.set(x, y, z);
-}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -210,11 +176,7 @@ function resetView() {
     camera.rotation.copy(initialCameraRotation);
     controls.reset();
 
-    // Mettre à jour le point utilisateur si existant
-    if (userPoint) {
-        const { originalLat, originalLon, originalEle } = userPoint.userData;
-        updatePoint(originalLat, originalLon, originalEle, false);
-    }
+ 
 
     // Mettre à jour l'affichage de l'interface utilisateur
     gui.updateDisplay();
@@ -235,5 +197,21 @@ window.addEventListener('resize', updateRendererSize);
 // Appelez cette fonction initialement pour définir les dimensions correctes
 updateRendererSize();
 
-init(trackIndex);
-animate();
+
+
+export function display3d(trackIndex){
+    init(trackIndex);
+    animate();
+}
+
+export function display3dLocal(gpxContent) {
+    coord = extractTrackPoints(gpxContent);
+            initialCoord = [...coord];
+            initialElevation = settings.Elevation;
+            updateElevationScale(settings.Elevation);
+
+            initialCameraPosition = camera.position.clone();
+            initialCameraRotation = camera.rotation.clone();
+            animate();
+            updateRendererSize()
+}

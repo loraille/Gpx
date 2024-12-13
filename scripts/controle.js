@@ -1,6 +1,7 @@
 //menu burger
 const menuMobile = document.querySelector('.menuMobile');
 const menu = document.getElementById('mobileCtrl');
+const trackMenuSelector=document.querySelector('.selectionTrack')
 let menuContent = false;
 menuMobile.addEventListener('click', () => {
     menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
@@ -22,11 +23,15 @@ function checkWindowWidth(element) {
 // Appeler la fonction au chargement de la page
 window.addEventListener('load', () => {
     checkWindowWidth(menu);
+    checkWindowWidth(menuMobile);
+    checkWindowWidth(trackMenuSelector);
 });
 
 // Appeler la fonction lorsque la fenêtre est redimensionnée
 window.addEventListener('resize', () => {
     checkWindowWidth(menu);
+    checkWindowWidth(menuMobile);
+    checkWindowWidth(trackMenuSelector);
 });
 
 // Gestion des boutons version WEB pour charger les traces
@@ -126,7 +131,7 @@ const nextSundayDate = getNextSundayFormatted();
 const startingPoint = "la halle de St Pardoux La Rivière";
 const churchRomain = "l'église de Champs-Romain";
 const noSortie= `⚠️Pas de sortie organisée ce dimanche ${nextSundayDate} 😥😪😭`;
-const planified= `🚴Rendez-vous ce dimanche ${nextSundayDate} à 9h devant ${startingPoint} pour la sortie VTT dominicale ! 🚴🚴`;
+const planified= `🚴Rendez-vous ce dimanche ${nextSundayDate} à 9h devant ${startingPoint} pour la sortie VTT dominicale pour une boucle vers Sceau St Angel ! 🚴🚴`;
 const toPlanified= `⚠️Pas encore de choix sur la sortie VTT de ce dimanche ${nextSundayDate} 😬😬😬`;
-document.querySelector('.marquee-content span').textContent =toPlanified;
+document.querySelector('.marquee-content span').textContent =planified;
 

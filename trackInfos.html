@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +15,23 @@
 <body>
     <header>
         <a href="index.html"><h1>Sports Outdoor Périgord Vert</h1></a>
-        <input type="file" id="fileInput" accept=".gpx">
+        <input type="file" id="gpxFileInput" accept=".gpx" style="display: none;">
+        <div id="yourGpx">ouvrir fichier.GPX</div>
     </header>
-    <div class="container">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <button id='btnGpx'onclick="document.getElementById('gpxFileInput').click()">Charger un tracé GPX</button>
+        </div>
+    </div>
+    <container>
+        <!----------------->
         <!-- cote gauche -->
+        <!----------------->
         <div id="map"></div>
+        <!----------------->
         <!-- cote droit -->
+        <!----------------->
         <div id="trackInfo">
             <!-- Retour -->
             <div class="retourContainer">
@@ -39,6 +50,7 @@
             <div class="titre">
                 <h2> <span  id="trackName"></span></h2>
             </div>
+
             <!-- infos globale -->
              <div class="infoGlobale">
                 <div class="infosGroupe">
@@ -53,6 +65,7 @@
                     <img src="./img/distance.png" alt="distance"  class="imgInfo"/>
                     <p id="distance"></p>
                 </div>
+
              </div>
             <!-- Description -->
             <div class="infoText">
@@ -82,7 +95,7 @@
                 <div id="myChart"></div>
             </div>
             <!-- Map 3D -->
-            <div class="titleContainer">
+            <div class="titleContainer" >
                 <div class="imgTitre">
                     <img src="./img/map3d.png" alt="tracks" class="miniatureTitre">
                     <h3>Map 3D</h3>
@@ -93,13 +106,14 @@
                 <div id="threejs-container"></div>
             </div>
         </div>
-    </div>
+    </container>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
     <script src="./scripts/geoFunction.js"></script>
-    <script src="./scripts/tracks.js"></script>
-    <script src="./scripts/track.js"></script>
     <script src="./scripts/map3d.js" type="module"></script>
+    <script src="./scripts/track.js" type="module"></script>
+    
+   
 </body>
 </html>
