@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 </head>
 <body>
     <header>
@@ -108,11 +109,27 @@
             </div>
             <div class="section">
                 <h3>Evènements</h3>
-                <div class="imgEvenement">
-                    <a href="https://www.facebook.com/LaCavalnTruffes/" target="_blank">
-                        <img src="./img/evenement.webp" alt="LaCavalnTruffes">
-                    </a>
-                </div>
+                <section id="main-carousel" class="splide" aria-label="My Awesome Gallery">
+                    <div class="splide__track">
+                      <ul class="splide__list">
+                             <li class="splide__slide">
+                          <a href="https://www.facebook.com/LaCavalnTruffes/" target="_blank" class="image-link">
+                            <img class="img1" src="./img/evenement.webp" alt="LaCavalnTruffes">
+                          </a>
+                        </li>
+                        <li class="splide__slide">
+                          <a href="https://www.klikego.com/inscription/trail-des-gorges-de-lauvezere-2025/course-a-pied-running/1735009639165-1?tab=-1" target="_blank" class="image-link">
+                            <img class="img1" src="./img/evenement2.webp" alt="LaCavalnTruffes">
+                          </a>
+                        </li>
+                        <li class="splide__slide">
+                          <a href="https://www.nafix.fr/m/fiche-rand-aupy-84967-11.html" target="_blank" class="image-link">
+                            <img class="img1" src="./img/evenement3.webp" alt="LaCavalnTruffes">
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </section>
             </div>
             <div class="section">
                 <div class="footer-txt">
@@ -150,7 +167,8 @@
         </figure>
         </div>
     </container>
-   
+
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
     <script src="./scripts/geoFunction.js"></script>
