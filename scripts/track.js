@@ -194,8 +194,18 @@ function createElevationChart(elevations, coordinates) {
         elevationChart.destroy();
     }
     const datasElevation = elevations.map((e, index) => {
-        return { dist: distances[index], elev: e, lat: coordinates[index][0], lon: coordinates[index][1] };
+        return {
+            dist: distances[index],
+            elev: e,
+            lat: coordinates[index][0],
+            lon: coordinates[index][1],
+            isMin: index === elevations.findIndex(e => e === minElevation),
+            isMax: index === elevations.findIndex(e => e === maxElevation)
+        };
     });
+    // Trouver l'index du premier min et du premier max dans datasElevation
+    const minIndex = datasElevation.findIndex(d => d.elev === minElevation);
+    const maxIndex = datasElevation.findIndex(d => d.elev === maxElevation);
 
     function getData() {
         return datasElevation;
@@ -209,7 +219,7 @@ function createElevationChart(elevations, coordinates) {
                 return {
                     //renvoi en légende
                     title: `Distance: ${datum.dist.toFixed(1)} km`,
-                    content: `Élévation: ${datum.elev.toFixed(0)} m`
+                    content: `Élévation: ${Math.round(datum.elev)} m`
                 };
             } else {
                 console.warn("Données invalides pour le tooltip:", datum);
@@ -218,11 +228,16 @@ function createElevationChart(elevations, coordinates) {
         },
     };
 
+    // Préparer les données pour la série scatter (min et max)
+    const scatterPoints = datasElevation.filter(d => d.isMin || d.isMax);
+
     // Création du graphique
     const { AgCharts } = agCharts;
     const textColor = '#ffffff';
+
     options = {
         container: document.getElementById("myChart"),
+        palette: null,
         data: getData(),
         series: [
             {
@@ -234,13 +249,17 @@ function createElevationChart(elevations, coordinates) {
                 fillOpacity: 1,
                 interpolation: { type: "smooth" },
                 tooltip,
-                marker: {
-                    itemStyler: (params) => {
-                        if (params.datum.elev === minElevation) return { fill: 'red', size: 8 };
-                        else if (params.datum.elev === maxElevation) return { fill: 'red', size: 8 };
-                        else return { size: 0 };
-                    }
-                },
+            },
+            {
+                type: "scatter",
+                data: scatterPoints,
+                fill: 'red',
+                stroke: "black",
+                xKey: "dist",
+                yKey: "elev",
+                yName:"Élévation min/max",
+                xName:"Distance",
+                tooltip,
             }
         ],
         axes: [
@@ -264,7 +283,8 @@ function createElevationChart(elevations, coordinates) {
                     formatter: (params) => `${params.value} m`,
                 },
                 interval: { step: step },
-                min: minElevation,
+                min: minElevation-10,
+                max: maxElevation+10,
             },
         ],
         background: {
@@ -273,20 +293,6 @@ function createElevationChart(elevations, coordinates) {
     };
 
     elevationChart = AgCharts.create(options);
-}
-
-// Fonction pour ajuster le "step" de l'axe des élévations
-function setStep(step) {
-    const axis = options.axes?.[1];
-    axis.interval = { step: step };
-    elevationChart.update(options);
-}
-
-// Fonction pour ajuster le "step" de l'axe des élévations
-function resetInterval() {
-    const axis = options.axes?.[1];
-    axis.interval = { step: 20 };
-    elevationChart.update(options);
 }
 
 // Fonction pour mettre à jour le marqueur dynamique sur la carte

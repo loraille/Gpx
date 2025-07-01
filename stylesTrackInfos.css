@@ -361,3 +361,8 @@ span {
     width: 30rem !important;
   }
 }
+
+#myChart .ag-chart-marker {
+  fill: #ff0000 !important;
+  stroke: #ff0000 !important;
+}
