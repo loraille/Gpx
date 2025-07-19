@@ -13,12 +13,12 @@ window.vttGPX = [
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1734282591/vtt-sp3_yvv0za.gpx",
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1734286648/vtt-sp4_udcqvv.gpx",
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1740082853/vtt-sp5_w2sfdd.gpx",
-    ],
+    ]
   },
   {
     gpxFiles: [
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1734195169/vtt-chpr1_it4umv.gpx",
-    ],
+    ]
   },
   {
     gpxFiles: [
@@ -29,6 +29,7 @@ window.vttGPX = [
   {
     gpxFiles: [
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1751388165/vtt-pp1_pqvxw4.gpx",
+      "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1752858051/vtt-st1_x304w8.gpx"
     ],
   },
 ];
@@ -42,6 +43,8 @@ window.courseGPX = [
 ];
 window.trailGPX = [
     {
-    gpxFiles: ['https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732872481/trail-sp1_y54axc.gpx',],
-    },
+      gpxFiles: [
+        'https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732872481/trail-sp1_y54axc.gpx',
+      ]
+    }
 ];
