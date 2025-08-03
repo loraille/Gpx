@@ -4,6 +4,7 @@ window.vttGPX = [
     gpxFiles: [
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732872486/vtt-cr1_ixdejm.gpx",
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1732872485/vtt-cr2_nfqqt9.gpx",
+      "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1754239692/vtt-cr3_nw1bvq.gpx"
     ],
   },
   {
@@ -29,9 +30,10 @@ window.vttGPX = [
   {
     gpxFiles: [
       "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1751388165/vtt-pp1_pqvxw4.gpx",
-      "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1752858051/vtt-st1_x304w8.gpx"
+      "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1752858051/vtt-st1_x304w8.gpx",
+      "https://res.cloudinary.com/dj6cmwlv8/raw/upload/v1754237766/vtt-ss1_v6y0op.gpx"
     ],
-  },
+  }
 ];
 window.courseGPX = [
     {
